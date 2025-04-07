@@ -1,15 +1,7 @@
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
-/**
- * This module executes inside of electron's main process. You can start
- * electron renderer process from here and communicate with the other processes
- * through IPC.
- *
- * When running `npm run build` or `npm run build:main`, this file is compiled to
- * `./src/main.js` using webpack. This gives us some performance wins.
- */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, screen } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -39,7 +31,8 @@ if (process.env.NODE_ENV === 'production') {
 const isDebug =
   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
 
-if (isDebug) {
+// FIXME: flip for devtools
+if (!isDebug) {
   require('electron-debug').default();
 }
 
@@ -71,8 +64,13 @@ const createWindow = async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 1024,
-    height: 728,
+    width: 160,
+    height: 160,
+    resizable: false,
+    frame: false,
+    transparent: true,
+    alwaysOnTop: true,
+    movable: true,
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: app.isPackaged
@@ -98,6 +96,28 @@ const createWindow = async () => {
     mainWindow = null;
   });
 
+  mainWindow.on('move', () => {
+    if (!mainWindow) return;
+
+    const bounds = mainWindow.getBounds();
+    const display = screen.getDisplayMatching(bounds);
+
+    const maxX = display.bounds.x + display.bounds.width - bounds.width;
+    const maxY = display.bounds.y + display.bounds.height - bounds.height;
+
+    const newX = Math.min(Math.max(bounds.x, display.bounds.x), maxX);
+    const newY = Math.min(Math.max(bounds.y, display.bounds.y), maxY);
+
+    if (bounds.x !== newX || bounds.y !== newY) {
+      mainWindow.setBounds({
+        x: newX,
+        y: newY,
+        width: bounds.width,
+        height: bounds.height,
+      });
+    }
+  });
+
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
 
@@ -111,10 +131,6 @@ const createWindow = async () => {
   // eslint-disable-next-line
   new AppUpdater();
 };
-
-/**
- * Add event listeners...
- */
 
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
