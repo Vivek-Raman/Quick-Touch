@@ -5,9 +5,5 @@ interface HotkeyProps {
 }
 
 export default function Hotkey({ item }: HotkeyProps) {
-  return (
-    <>
-      <button>{item.keycode}</button>
-    </>
-  );
+  return <button type="button">{item.keycode}</button>;
 }

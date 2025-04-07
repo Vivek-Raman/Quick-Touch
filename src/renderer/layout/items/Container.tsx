@@ -1,4 +1,4 @@
-import { ContainerItem, Item } from '../../../types/Item';
+import { ContainerItem } from '../../../types/Item';
 
 interface ContainerProps {
   item: ContainerItem;
@@ -8,8 +8,8 @@ interface ContainerProps {
 export default function Container(props: ContainerProps) {
   const { item, doUpdate } = props;
   return (
-    <>
-      <button onClick={() => doUpdate(item.stageId)}>{item.stageId}</button>
-    </>
+    <button type="button" onClick={() => doUpdate(item.stageId)}>
+      {item.stageId}
+    </button>
   );
 }

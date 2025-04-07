@@ -18,7 +18,7 @@ export default function StageProvider() {
     const db = new PouchDB<Stage>('stage');
     db.info().then(console.debug);
 
-    let stage: StageEntity = await db.get(stageId.toString());
+    const stage: StageEntity = await db.get(stageId.toString());
     if (!stage) return;
     setItems(stage.children);
     setLoading(false);
@@ -38,9 +38,12 @@ export default function StageProvider() {
           return (
             <Container item={item as ContainerItem} doUpdate={setStageId} />
           );
-        } else if (item.type === 'hotkey') {
+        }
+        if (item.type === 'hotkey') {
           return <Hotkey item={item as HotkeyItem} />;
         }
+
+        return <></>;
       })}
     </>
   );
