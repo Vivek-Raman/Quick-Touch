@@ -1,5 +1,11 @@
 {
   "name": "quick-touch",
+  "version": "1.0.0",
+  "author": {
+    "name": "Vivek Raman",
+    "email": "me@vivekraman.dev",
+    "url": "https://github.com/Vivek-Raman"
+  },
   "main": "./.erb/dll/main.bundle.dev.js",
   "scripts": {
     "build": "concurrently \"npm run build:main\" \"npm run build:renderer\"",
@@ -70,6 +76,7 @@
     "@electron/notarize": "^3.0.0",
     "electron-debug": "^4.1.0",
     "electron-log": "^5.3.2",
+    "electron-store": "^10.0.1",
     "electron-updater": "^6.3.9",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -141,8 +148,8 @@
     "webpack-merge": "^6.0.1"
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "QuickTouch",
+    "appId": "dev.vivekraman.quicktouch",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
@@ -201,12 +208,9 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate"
+      "owner": "Vivek-Raman",
+      "repo": "Quick-Touch"
     }
-  },
-  "collective": {
-    "url": "https://opencollective.com/electron-react-boilerplate-594"
   },
   "devEngines": {
     "runtime": {
