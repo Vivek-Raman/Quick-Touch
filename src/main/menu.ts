@@ -19,12 +19,14 @@ export default class MenuBuilder {
   }
 
   buildMenu(): Menu {
+
     if (
       process.env.NODE_ENV === 'development' ||
       process.env.DEBUG_PROD === 'true'
     ) {
-      this.setupDevelopmentEnvironment();
+      // this.setupDevelopmentEnvironment();
     }
+    this.showEditOption();
 
     const template =
       process.platform === 'darwin'
@@ -35,6 +37,20 @@ export default class MenuBuilder {
     Menu.setApplicationMenu(menu);
 
     return menu;
+  }
+
+  showEditOption(): void {
+    this.mainWindow.webContents.on('context-menu', (_, props) => {
+
+      Menu.buildFromTemplate([
+        {
+          label: 'Edit screen',
+          click: () => {
+            console.log(props);
+          },
+        },
+      ]).popup({ window: this.mainWindow });
+    });
   }
 
   setupDevelopmentEnvironment(): void {

@@ -71,6 +71,7 @@ const createWindow = async () => {
     transparent: true,
     alwaysOnTop: true,
     movable: true,
+    skipTaskbar: true,
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: app.isPackaged
