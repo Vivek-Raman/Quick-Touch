@@ -2,18 +2,9 @@
 
 import path from 'path';
 import { app, BrowserWindow, shell, ipcMain, screen } from 'electron';
-import { autoUpdater } from 'electron-updater';
-import log from 'electron-log';
 import MenuBuilder from './menu';
-import { resolveHtmlPath } from './util';
-
-class AppUpdater {
-  constructor() {
-    log.transports.file.level = 'info';
-    autoUpdater.logger = log;
-    autoUpdater.checkForUpdatesAndNotify();
-  }
-}
+import { installExtensions, isDebug, resolveHtmlPath } from './util';
+import AppUpdater from './updater';
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -23,31 +14,14 @@ ipcMain.on('ipc-example', async (event, arg) => {
   event.reply('ipc-example', msgTemplate('pong'));
 });
 
-if (process.env.NODE_ENV === 'production') {
+if (!isDebug) {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();
 }
 
-const isDebug =
-  process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
-
-// FIXME: flip for devtools
-if (!isDebug) {
+if (isDebug) {
   require('electron-debug').default();
 }
-
-const installExtensions = async () => {
-  const installer = require('electron-devtools-installer');
-  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = ['REACT_DEVELOPER_TOOLS'];
-
-  return installer
-    .default(
-      extensions.map((name) => installer[name]),
-      forceDownload,
-    )
-    .catch(console.log);
-};
 
 const createWindow = async () => {
   if (isDebug) {
@@ -64,8 +38,8 @@ const createWindow = async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 160,
-    height: 160,
+    width: 80,
+    height: 80,
     resizable: false,
     frame: false,
     transparent: true,
@@ -128,7 +102,6 @@ const createWindow = async () => {
     return { action: 'deny' };
   });
 
-  // Remove this if your app does not use auto updates
   // eslint-disable-next-line
   new AppUpdater();
 };

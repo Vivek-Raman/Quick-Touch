@@ -5,9 +5,9 @@
       "name": "Electron: Main",
       "type": "node",
       "request": "launch",
-      "protocol": "inspector",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "start"],
+      "console": "integratedTerminal",
       "env": {
         "MAIN_ARGS": "--inspect=5858 --remote-debugging-port=9223"
       }
