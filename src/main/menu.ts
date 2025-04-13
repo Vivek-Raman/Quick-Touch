@@ -1,5 +1,5 @@
 import { Menu, BrowserWindow, MenuItemConstructorOptions } from 'electron';
-import createEditWindow from './edit';
+import enableEditMode from './edit';
 
 export default class MenuBuilder {
   mainWindow: BrowserWindow;
@@ -11,6 +11,7 @@ export default class MenuBuilder {
   buildMenu(): void {
     this.mainWindow.webContents.on('context-menu', (_, props) => {
       const menuOptions: MenuItemConstructorOptions[] = [];
+      console.log(props);
       menuOptions.push(...this.showEditOption());
       menuOptions.push({ type: 'separator' });
 
@@ -31,7 +32,7 @@ export default class MenuBuilder {
       {
         label: 'Edit screen',
         click: () => {
-          createEditWindow();
+          enableEditMode(this.mainWindow);
         },
       },
     ];

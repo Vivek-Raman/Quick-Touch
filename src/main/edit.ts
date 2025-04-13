@@ -1,50 +1,16 @@
-import { app, BrowserWindow } from 'electron';
-import path from 'path';
-import { installExtensions, isDebug, resolveHtmlPath } from './util';
+import { BrowserWindow, ipcMain, screen } from 'electron';
 
-export default async function createEditWindow() {
-  if (isDebug) {
-    await installExtensions();
-  }
+export default async function enableEditMode(mainWindow: BrowserWindow) {
+  mainWindow.setSize(800, 800);
 
-  const RESOURCES_PATH = app.isPackaged
-    ? path.join(process.resourcesPath, 'assets')
-    : path.join(__dirname, '../../assets');
+  // Get the primary display
+  const primaryDisplay = screen.getPrimaryDisplay();
+  const { width, height } = primaryDisplay.workAreaSize;
 
-  const getAssetPath = (...paths: string[]): string => {
-    return path.join(RESOURCES_PATH, ...paths);
-  };
+  // Calculate the center position
+  const x = Math.floor((width - 800) / 2);
+  const y = Math.floor((height - 800) / 2);
 
-  let editWindow: BrowserWindow | null = new BrowserWindow({
-    show: true,
-    alwaysOnTop: true,
-    modal: true,
-    resizable: false,
-    frame: true,
-    transparent: false,
-    movable: true,
-    skipTaskbar: false,
-    icon: getAssetPath('icon.png'),
-    webPreferences: {
-      preload: app.isPackaged
-        ? path.join(__dirname, 'preload.js')
-        : path.join(__dirname, '../../.erb/dll/preload.js'),
-    },
-  });
-  editWindow.loadURL(resolveHtmlPath('index.html'));
-
-  editWindow.on('ready-to-show', () => {
-    if (!editWindow) {
-      throw new Error('"editWindow" is not defined');
-    }
-    if (process.env.START_MINIMIZED) {
-      editWindow.minimize();
-    } else {
-      editWindow.show();
-    }
-  });
-
-  editWindow.on('closed', () => {
-    editWindow = null;
-  });
+  mainWindow.setPosition(x, y, true);
+  ipcMain.emit('ipc--set-edit-mode', [true]);
 }

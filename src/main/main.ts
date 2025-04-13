@@ -1,18 +1,12 @@
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain, screen } from 'electron';
+import { app, BrowserWindow, shell, screen } from 'electron';
 import MenuBuilder from './menu';
 import { installExtensions, isDebug, resolveHtmlPath } from './util';
 import AppUpdater from './updater';
 
 let mainWindow: BrowserWindow | null = null;
-
-ipcMain.on('ipc-example', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
-  event.reply('ipc-example', msgTemplate('pong'));
-});
 
 if (!isDebug) {
   const sourceMapSupport = require('source-map-support');

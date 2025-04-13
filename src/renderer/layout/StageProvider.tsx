@@ -36,11 +36,20 @@ export default function StageProvider() {
       {items.map((item) => {
         if (item.type === 'container') {
           return (
-            <Container item={item as ContainerItem} doUpdate={setStageId} />
+            <Container
+              // key={item.position} // FIXME: add key
+              item={item as ContainerItem}
+              doUpdate={setStageId}
+            />
           );
         }
         if (item.type === 'hotkey') {
-          return <Hotkey item={item as HotkeyItem} />;
+          return (
+            <Hotkey
+              // key={item.position} // FIXME: add key
+              item={item as HotkeyItem}
+            />
+          );
         }
 
         return <></>;
