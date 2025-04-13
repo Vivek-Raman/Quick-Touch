@@ -31,7 +31,7 @@ export default class MenuBuilder {
       {
         label: 'Edit screen',
         click: () => {
-          createEditWindow();
+          createEditWindow(this.mainWindow);
         },
       },
     ];

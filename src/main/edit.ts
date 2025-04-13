@@ -2,7 +2,14 @@ import { app, BrowserWindow } from 'electron';
 import path from 'path';
 import { installExtensions, isDebug, resolveHtmlPath } from './util';
 
-export default async function createEditWindow() {
+let editWindow: BrowserWindow | null;
+
+export default async function createEditWindow(parent: BrowserWindow) {
+  if (editWindow) {
+    editWindow.focus();
+    return;
+  }
+
   if (isDebug) {
     await installExtensions();
   }
@@ -15,10 +22,11 @@ export default async function createEditWindow() {
     return path.join(RESOURCES_PATH, ...paths);
   };
 
-  let editWindow: BrowserWindow | null = new BrowserWindow({
+  editWindow = new BrowserWindow({
     show: true,
     alwaysOnTop: true,
     modal: true,
+    parent,
     resizable: false,
     frame: true,
     transparent: false,
