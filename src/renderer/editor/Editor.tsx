@@ -2,6 +2,7 @@ import { Anchor, Breadcrumbs, SimpleGrid } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import PouchDB from 'pouchdb-browser';
 import { Stage, StageEntity } from '../../types/Stage';
+import Loading from '../common/Loading';
 
 interface LinkedLabel {
   label: string;
@@ -31,7 +32,7 @@ export default function EditorApp() {
 
   if (loading) {
     // TODO: pretty
-    return <>Loading...</>;
+    return <Loading />;
   }
 
   return (

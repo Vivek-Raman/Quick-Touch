@@ -6,7 +6,7 @@ import Loading from './common/Loading';
 
 export default function App() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const checkFirstTimeUser = useCallback(async () => {
     const db = new PouchDb<StageEntity>('stage');
@@ -15,7 +15,7 @@ export default function App() {
       // No root element found; redirecting to onboarding
       await navigate('/first-launch');
     } else {
-      await navigate('/');
+      await navigate('/stage');
     }
   }, [navigate]);
 
@@ -39,13 +39,15 @@ export default function App() {
         setLoading(false);
       },
     );
+  }, [checkFirstTimeUser, navigate]);
 
+  useEffect(() => {
     (async () => {
       setLoading(true);
       await checkFirstTimeUser();
       setLoading(false);
     })();
-  }, [checkFirstTimeUser, navigate]);
+  }, [checkFirstTimeUser]);
 
   if (loading) return <Loading />;
   return <>You should not be here.</>;

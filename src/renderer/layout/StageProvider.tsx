@@ -4,6 +4,7 @@ import type { Stage, StageEntity } from '../../types/Stage';
 import type { ContainerItem, HotkeyItem, Item } from '../../types/Item';
 import Container from './items/Container';
 import Hotkey from './items/Hotkey';
+import Loading from '../common/Loading';
 
 export default function StageProvider() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -30,7 +31,7 @@ export default function StageProvider() {
     })();
   }, [stageId]);
 
-  if (loading) return <>Loading...</>;
+  if (loading) return <Loading />;
   return (
     <>
       {items.map((item) => {
