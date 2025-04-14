@@ -5,8 +5,8 @@ const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
 root.render(<App />);
 
-window.electron.ipcRenderer.once('ipc--set-edit-mode', (editMode) => {
+window.electron.ipcRenderer.on('ipc--set-edit-mode', (editMode) => {
   if (editMode) {
-    window.location.href = '/editor';
+    window.location.hash = '/editor';
   }
 });

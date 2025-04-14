@@ -1,21 +1,13 @@
 import PouchDB from 'pouchdb-browser';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import type { Stage, StageEntity } from '../../types/Stage';
 import type { ContainerItem, HotkeyItem, Item } from '../../types/Item';
 import Container from './items/Container';
 import Hotkey from './items/Hotkey';
 
-interface StageProviderParams {
-  target?: string;
-}
-
 export default function StageProvider() {
-  const { target } = useParams<Record<string, string>>() as StageProviderParams;
   const navigate = useNavigate();
-  if (target) {
-    navigate(`/${target}`);
-  }
 
   const [loading, setLoading] = useState<boolean>(false);
   // TODO: use saved initial stage
@@ -35,7 +27,18 @@ export default function StageProvider() {
     setLoading(false);
   };
 
+  const handleEditModeIPC = () => {
+    window.electron.ipcRenderer.on('ipc--set-edit-mode', (editMode) => {
+      if (editMode) {
+        navigate('/editor');
+      } else {
+        navigate('/');
+      }
+    });
+  };
+
   useEffect(() => {
+    handleEditModeIPC();
     (async () => {
       await loadStage();
     })();

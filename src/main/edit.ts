@@ -1,4 +1,4 @@
-import { BrowserWindow, ipcMain, screen } from 'electron';
+import { BrowserWindow, screen } from 'electron';
 
 export default async function enableEditMode(mainWindow: BrowserWindow) {
   mainWindow.setSize(800, 800);
@@ -12,5 +12,5 @@ export default async function enableEditMode(mainWindow: BrowserWindow) {
   const y = Math.floor((height - 800) / 2);
 
   mainWindow.setPosition(x, y, true);
-  ipcMain.emit('ipc--set-edit-mode', [true]);
+  mainWindow.webContents.send('ipc--set-edit-mode', true);
 }

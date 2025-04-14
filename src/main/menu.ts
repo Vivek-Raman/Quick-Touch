@@ -11,7 +11,6 @@ export default class MenuBuilder {
   buildMenu(): void {
     this.mainWindow.webContents.on('context-menu', (_, props) => {
       const menuOptions: MenuItemConstructorOptions[] = [];
-      console.log(props);
       menuOptions.push(...this.showEditOption());
       menuOptions.push({ type: 'separator' });
 

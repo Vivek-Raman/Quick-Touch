@@ -32,8 +32,8 @@ const createWindow = async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 380,
-    height: 380,
+    width: 160,
+    height: 160,
     resizable: false,
     frame: false,
     transparent: true,
@@ -60,6 +60,8 @@ const createWindow = async () => {
       mainWindow.show();
     }
   });
+
+  mainWindow.on('system-context-menu', (event) => event.preventDefault());
 
   mainWindow.on('closed', () => {
     mainWindow = null;
