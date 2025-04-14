@@ -1,7 +1,7 @@
 import { Item } from './Item';
 
 export interface Stage {
-  name?: string;
+  name: string;
   children: Item[];
 }
 

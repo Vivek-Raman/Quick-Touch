@@ -1,5 +1,5 @@
 import { Menu, BrowserWindow, MenuItemConstructorOptions } from 'electron';
-import enableEditMode from './edit';
+import { enableEditMode, disableEditMode } from './edit';
 
 export default class MenuBuilder {
   mainWindow: BrowserWindow;
@@ -34,6 +34,12 @@ export default class MenuBuilder {
           enableEditMode(this.mainWindow);
         },
       },
+      {
+        label: 'Stop editing',
+        click: () => {
+          disableEditMode(this.mainWindow);
+        },
+      },
     ];
   }
 
@@ -55,6 +61,12 @@ export default class MenuBuilder {
         label: 'Inspect element',
         click: () => {
           this.mainWindow.webContents.inspectElement(x, y);
+        },
+      },
+      {
+        label: 'Flush stage DB',
+        click: () => {
+          this.mainWindow.webContents.send('ipc--dev--flush-stage-db', true);
         },
       },
     ];

@@ -11,36 +11,25 @@ export default function StageProvider() {
 
   const [loading, setLoading] = useState<boolean>(false);
   // TODO: use saved initial stage
-  const [stageId, setStageId] = useState<number>(0);
+  const [stageId, setStageId] = useState<string>('0');
   const [items, setItems] = useState<Item[]>([]);
 
-  const loadStage = async () => {
+  const loadStage = async (id: string) => {
     setLoading(true);
     setItems([]);
 
     const db = new PouchDB<Stage>('stage');
-    db.info().then(console.debug);
+    // db.info().then(console.info);
 
-    const stage: StageEntity = await db.get(stageId.toString());
+    const stage: StageEntity = await db.get(id);
     if (!stage) return;
     setItems(stage.children);
     setLoading(false);
   };
 
-  const handleEditModeIPC = () => {
-    window.electron.ipcRenderer.on('ipc--set-edit-mode', (editMode) => {
-      if (editMode) {
-        navigate('/editor');
-      } else {
-        navigate('/');
-      }
-    });
-  };
-
   useEffect(() => {
-    handleEditModeIPC();
     (async () => {
-      await loadStage();
+      await loadStage(stageId);
     })();
   }, [stageId]);
 
