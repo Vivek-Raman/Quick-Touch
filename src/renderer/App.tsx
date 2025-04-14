@@ -1,5 +1,5 @@
-import { Navigate, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
 import PouchDb from 'pouchdb-browser';
 import { StageEntity } from '../types/Stage';
 import Loading from './common/Loading';
@@ -8,16 +8,16 @@ export default function App() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
 
-  const checkFirstTimeUser = async () => {
+  const checkFirstTimeUser = useCallback(async () => {
     const db = new PouchDb<StageEntity>('stage');
-    const root = await db.get('0').catch((_) => {});
+    const root = await db.get('0').catch(() => {});
     if (!root) {
-      console.warn('No root element found; redirecting to onboarding.');
+      // No root element found; redirecting to onboarding
       await navigate('/first-launch');
     } else {
       await navigate('/');
     }
-  };
+  }, [navigate]);
 
   useEffect(() => {
     window.electron.ipcRenderer.on('ipc--set-edit-mode', async (editMode) => {
@@ -45,7 +45,7 @@ export default function App() {
       await checkFirstTimeUser();
       setLoading(false);
     })();
-  }, []);
+  }, [checkFirstTimeUser, navigate]);
 
   if (loading) return <Loading />;
   return <>You should not be here.</>;

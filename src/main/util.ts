@@ -1,4 +1,6 @@
-/* eslint import/prefer-default-export: off */
+/* eslint-disable global-require */
+/* eslint-disable no-console */
+
 import { URL } from 'url';
 import path from 'path';
 

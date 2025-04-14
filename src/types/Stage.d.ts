@@ -1,3 +1,4 @@
+import type PouchDB from 'pouchdb-browser';
 import { Item } from './Item';
 
 export interface Stage {

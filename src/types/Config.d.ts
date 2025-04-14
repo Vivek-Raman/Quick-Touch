@@ -1,3 +1,5 @@
+import type PouchDB from 'pouchdb-browser';
+
 export interface Config {
   key: string;
   value: string;

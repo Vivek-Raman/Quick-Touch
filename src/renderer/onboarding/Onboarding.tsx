@@ -1,9 +1,9 @@
 import PouchDb from 'pouchdb-browser';
 import { useEffect, useState } from 'react';
 import { Button, Title } from '@mantine/core';
+import { useNavigate } from 'react-router-dom';
 import { Stage } from '../../types/Stage';
 import Loading from '../common/Loading';
-import { useNavigate } from 'react-router-dom';
 
 export default function Onboarding() {
   const [loading, setLoading] = useState<boolean>(false);
