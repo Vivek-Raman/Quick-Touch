@@ -1,14 +1,21 @@
 import PouchDb from 'pouchdb-browser';
 import { useEffect, useState } from 'react';
-import { Stage } from '../../types/Stage';
 import { Button, Title } from '@mantine/core';
+import { Stage } from '../../types/Stage';
+import Loading from '../common/Loading';
+import { useNavigate } from 'react-router-dom';
 
 export default function Onboarding() {
   const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const initializeDB = async () => {
     const db = new PouchDb<Stage>('stage');
     await db.put({ _id: '0', name: 'Root', children: [] });
+  };
+
+  const start = () => {
+    navigate('/editor');
   };
 
   useEffect(() => {
@@ -19,10 +26,13 @@ export default function Onboarding() {
     })();
   }, []);
 
+  if (loading) <Loading />;
   return (
     <>
-      <Title>Welcome to Quick-Touch!</Title>
-      <Button>Get started {'->'}</Button>
+      <Title>Quick-Touch</Title>
+      <Button disabled={loading} onClick={() => start()}>
+        Get started {'->'}
+      </Button>
     </>
   );
 }

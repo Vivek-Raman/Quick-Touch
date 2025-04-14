@@ -1,17 +1,7 @@
-import {
-  Anchor,
-  Breadcrumbs,
-  createTheme,
-  MantineProvider,
-  SimpleGrid,
-} from '@mantine/core';
+import { Anchor, Breadcrumbs, SimpleGrid } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import PouchDB from 'pouchdb-browser';
 import { Stage, StageEntity } from '../../types/Stage';
-
-const theme = createTheme({
-  primaryColor: 'teal',
-});
 
 interface LinkedLabel {
   label: string;
@@ -45,7 +35,7 @@ export default function EditorApp() {
   }
 
   return (
-    <MantineProvider theme={theme}>
+    <>
       <Breadcrumbs>
         {history.map((item) => (
           <Anchor key={item.id} href={item.id}>
@@ -58,6 +48,6 @@ export default function EditorApp() {
           <div key={index}>{child.type}</div>
         ))}
       </SimpleGrid>
-    </MantineProvider>
+    </>
   );
 }

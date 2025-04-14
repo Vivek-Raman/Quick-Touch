@@ -1,14 +1,11 @@
 import PouchDB from 'pouchdb-browser';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import type { Stage, StageEntity } from '../../types/Stage';
 import type { ContainerItem, HotkeyItem, Item } from '../../types/Item';
 import Container from './items/Container';
 import Hotkey from './items/Hotkey';
 
 export default function StageProvider() {
-  const navigate = useNavigate();
-
   const [loading, setLoading] = useState<boolean>(false);
   // TODO: use saved initial stage
   const [stageId, setStageId] = useState<string>('0');

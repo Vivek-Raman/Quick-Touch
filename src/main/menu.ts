@@ -71,23 +71,4 @@ export default class MenuBuilder {
       },
     ];
   }
-
-  buildDefaultTemplate() {
-    const templateDefault = [
-      {
-        label: '&File',
-        submenu: [
-          {
-            label: '&Close',
-            accelerator: 'Ctrl+W',
-            click: () => {
-              this.mainWindow.close();
-            },
-          },
-        ],
-      },
-    ];
-
-    return templateDefault;
-  }
 }

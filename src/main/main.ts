@@ -1,7 +1,7 @@
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
 import path from 'path';
-import { app, BrowserWindow, shell, screen } from 'electron';
+import { app, BrowserWindow, shell, screen, Menu } from 'electron';
 import MenuBuilder from './menu';
 import { installExtensions, isDebug, resolveHtmlPath } from './util';
 import AppUpdater from './updater';
@@ -109,6 +109,8 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 });
+
+Menu.setApplicationMenu(null);
 
 app
   .whenReady()
