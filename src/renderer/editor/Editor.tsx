@@ -1,4 +1,4 @@
-import { Anchor, Breadcrumbs, SimpleGrid } from '@mantine/core';
+import { Anchor, Breadcrumbs, Button, SimpleGrid } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import PouchDB from 'pouchdb-browser';
 import { Stage, StageEntity } from '../../types/Stage';
@@ -49,6 +49,15 @@ export default function EditorApp() {
           <div key={index}>{child.type}</div>
         ))}
       </SimpleGrid>
+      <Button
+        onClick={() => {
+          window.electron.ipcRenderer.listInstalledApps().then((res) => {
+            console.log(res);
+          });
+        }}
+      >
+        ghhh
+      </Button>
     </>
   );
 }

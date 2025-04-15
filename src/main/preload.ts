@@ -15,6 +15,9 @@ const electronHandler = {
         ipcRenderer.removeListener(channel, subscription);
       };
     },
+    listInstalledApps(): Promise<any[]> {
+      return ipcRenderer.invoke('list-installed-apps');
+    },
   },
 };
 

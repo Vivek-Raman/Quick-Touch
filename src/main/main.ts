@@ -5,6 +5,7 @@ import { app, BrowserWindow, shell, screen, Menu } from 'electron';
 import MenuBuilder from './menu';
 import { installExtensions, isDebug, resolveHtmlPath } from './util';
 import AppUpdater from './updater';
+import loadAddons from './addons';
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -111,6 +112,7 @@ app.on('window-all-closed', () => {
 });
 
 Menu.setApplicationMenu(null);
+loadAddons();
 
 app
   .whenReady()
