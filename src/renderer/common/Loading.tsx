@@ -1,3 +1,9 @@
+import { Center, Loader } from '@mantine/core';
+
 export default function Loading() {
-  return <>Loading..</>;
+  return (
+    <Center>
+      <Loader type="dots" />
+    </Center>
+  );
 }

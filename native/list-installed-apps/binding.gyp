@@ -8,7 +8,7 @@
       ],
       "include_dirs": [
         "<!@(node -p \"require('node-addon-api').include\")",
-        "include"
+        "include/"
       ],
       "dependencies": [
         "<!(node -p \"require('node-addon-api').gyp\")"

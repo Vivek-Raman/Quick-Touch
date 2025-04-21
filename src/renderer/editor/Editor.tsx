@@ -31,7 +31,6 @@ export default function EditorApp() {
   }, [currentStage]);
 
   if (loading) {
-    // TODO: pretty
     return <Loading />;
   }
 
