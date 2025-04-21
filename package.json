@@ -157,8 +157,10 @@
   "build": {
     "productName": "QuickTouch",
     "appId": "dev.vivekraman.quicktouch",
-    "asar": true,
-    "asarUnpack": "**\\*.{node,dll}",
+    "asar": false,
+    "asarUnpack": [
+      "**/*.{node,dll}"
+    ],
     "files": [
       "dist",
       "node_modules",
