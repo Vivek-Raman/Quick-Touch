@@ -7,19 +7,27 @@
         "src/module.cc"
       ],
       "include_dirs": [
-        "./node_modules/node-addon-api",
+        "<!@(node -p \"require('node-addon-api').include\")",
         "include"
       ],
       "dependencies": [
         "<!(node -p \"require('node-addon-api').gyp\")"
       ],
       "defines": [
-        "NODE_ADDON_API_CPP_EXCEPTIONS"
+        "NODE_ADDON_API_CPP_EXCEPTIONS",
+        "NAPI_DISABLE_CPP_EXCEPTIONS"
       ],
-      "libraries": [
-        "-ladvapi32",
-        "-lshell32",
-        "-lmsi"
+      "conditions": [
+        ['OS=="win"', {
+          "libraries": [
+            "-ladvapi32",
+            "-lshell32",
+            "-lmsi"
+          ],
+        }, {
+          "libraries": [
+          ],
+        }],
       ],
       "cflags!": [
         "-fno-exceptions"

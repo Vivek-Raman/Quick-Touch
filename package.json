@@ -81,7 +81,6 @@
     "electron-log": "^5.3.2",
     "electron-store": "^10.0.1",
     "electron-updater": "^6.3.9",
-    "list-installed-apps": "file:native/list-installed-apps",
     "pouchdb-browser": "^9.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

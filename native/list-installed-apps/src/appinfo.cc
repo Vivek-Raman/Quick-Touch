@@ -1,16 +1,30 @@
+#ifdef _WIN32
 #include <windows.h>
 #include <windef.h>
 #include <msi.h>
 #include <shellapi.h>
+#endif
 #include <string>
 #include <vector>
 #include "../include/appinfo.h"
 
 namespace AppInfoModule
 {
+#ifdef _WIN32
+  std::string wstring_to_utf8(const std::wstring &wstr)
+  {
+    if (wstr.empty())
+      return std::string();
+    int size_needed = WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), (int)wstr.size(), nullptr, 0, nullptr, nullptr);
+    std::string str(size_needed, 0);
+    WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), (int)wstr.size(), &str[0], size_needed, nullptr, nullptr);
+    return str;
+  }
+
   std::vector<AppInfo> GetInstalledApps()
   {
     std::vector<AppInfo> apps;
+
     const wchar_t *uninstallPaths[] = {L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall",
                                        L"SOFTWARE\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall"};
 
@@ -36,32 +50,14 @@ namespace AppInfoModule
             // Get product name
             if (RegGetValueW(hSubKey, NULL, L"DisplayName", RRF_RT_REG_SZ, NULL, displayName, &size) == ERROR_SUCCESS)
             {
-              info.productName = displayName;
+              info.productName = wstring_to_utf8(displayName);
             }
 
-            // Get executable path from icon path or uninstall string
-            wchar_t iconPath[MAX_PATH];
-            size = sizeof(iconPath);
-            if (RegGetValueW(hSubKey, NULL, L"DisplayIcon", RRF_RT_REG_SZ, NULL, iconPath, &size) == ERROR_SUCCESS)
+            wchar_t uninstallPath[MAX_PATH];
+            size = sizeof(uninstallPath);
+            if (RegGetValueW(hSubKey, NULL, L"UninstallString", RRF_RT_REG_SZ, NULL, uninstallPath, &size) == ERROR_SUCCESS)
             {
-              info.executablePath = iconPath;
-            }
-            else
-            {
-              wchar_t uninstallPath[MAX_PATH];
-              size = sizeof(uninstallPath);
-              if (RegGetValueW(hSubKey, NULL, L"UninstallString", RRF_RT_REG_SZ, NULL, uninstallPath, &size) == ERROR_SUCCESS)
-              {
-                info.executablePath = uninstallPath;
-              }
-            }
-
-            // Extract icon
-            if (!info.executablePath.empty())
-            {
-              HICON hIcon;
-              ExtractIconExW(info.executablePath.c_str(), 0, &hIcon, NULL, 1);
-              info.appIcon = hIcon;
+              info.executablePath = wstring_to_utf8(uninstallPath);
             }
 
             // Add to list if valid
@@ -87,20 +83,14 @@ namespace AppInfoModule
       if (MsiGetProductInfoExW(productCode, nullptr, MSIINSTALLCONTEXT_ALL, L"InstalledProductName", productName, &size) == ERROR_SUCCESS)
       {
         AppInfo info;
-        info.productName = productName;
+        info.productName = wstring_to_utf8(productName);
 
         // Get executable path from MSI package
         wchar_t installPath[MAX_PATH];
         size = sizeof(installPath);
         if (MsiGetProductInfoExW(productCode, nullptr, MSIINSTALLCONTEXT_ALL, L"InstallSource", installPath, &size) == ERROR_SUCCESS)
         {
-          info.executablePath = installPath;
-
-          // Extract icon
-          HICON hIcon;
-          ExtractIconExW(info.executablePath.c_str(), 0, &hIcon, NULL, 1);
-          info.appIcon = hIcon;
-
+          info.executablePath = wstring_to_utf8(installPath);
           apps.push_back(info);
         }
       }
@@ -108,4 +98,12 @@ namespace AppInfoModule
 
     return apps;
   }
+#else
+  std::vector<AppInfo> GetInstalledApps()
+  {
+    std::vector<AppInfo> apps;
+    return apps;
+  }
+
+#endif
 }

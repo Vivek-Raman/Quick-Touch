@@ -1,13 +1,13 @@
 #pragma once
+#include <string>
 #include <vector>
 
 namespace AppInfoModule
 {
   struct AppInfo
   {
-    std::wstring productName;
-    std::wstring executablePath;
-    HICON appIcon;
+    std::string productName;
+    std::string executablePath;
   };
 
   std::vector<AppInfo> GetInstalledApps();
