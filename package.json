@@ -59,6 +59,7 @@
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
     "@svgr/webpack": "^8.1.0",
     "@teamsupercell/typings-for-css-modules-loader": "^2.5.2",
+    "@testing-library/react": "^16.3.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.14.1",
     "@types/pouchdb-browser": "^6.1.5",
@@ -130,36 +131,6 @@
       "node_modules",
       "package.json"
     ],
-    "mac": {
-      "sign": ".erb/scripts/notarize.js",
-      "notarize": false,
-      "target": {
-        "target": "default",
-        "arch": [
-          "arm64",
-          "x64"
-        ]
-      },
-      "type": "distribution",
-      "hardenedRuntime": true,
-      "entitlements": "assets/entitlements.mac.plist",
-      "entitlementsInherit": "assets/entitlements.mac.plist",
-      "gatekeeperAssess": false
-    },
-    "dmg": {
-      "contents": [
-        {
-          "x": 130,
-          "y": 220
-        },
-        {
-          "x": 410,
-          "y": 220,
-          "type": "link",
-          "path": "/Applications"
-        }
-      ]
-    },
     "win": {
       "target": [
         "nsis"
