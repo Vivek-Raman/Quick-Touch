@@ -23,8 +23,7 @@
     "start:main": "concurrently -k \"cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --watch --config ./.erb/configs/webpack.config.main.dev.ts\" \"electronmon .\"",
     "start:preload": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true NODE_OPTIONS=\"-r ts-node/register --no-warnings\" webpack --config ./.erb/configs/webpack.config.preload.dev.ts",
     "start:renderer": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true NODE_OPTIONS=\"-r ts-node/register --no-warnings\" webpack serve --config ./.erb/configs/webpack.config.renderer.dev.ts",
-    "rebuild-native": "cd native/list-installed-apps && npm install --build-from-source --target=35.1.4 --runtime=electron --dist-url=https://electronjs.org/headers && cd ../../release/app && npm run rebuild && cd ../..",
-    "test": "jest"
+    "rebuild-native": "cd native/list-installed-apps && npm install --build-from-source --target=35.1.4 --runtime=electron --dist-url=https://electronjs.org/headers && cd ../../release/app && npm run rebuild && cd ../.."
   },
   "prettier": {
     "singleQuote": true,
@@ -43,38 +42,6 @@
       }
     ]
   },
-  "jest": {
-    "moduleDirectories": [
-      "node_modules",
-      "release/app/node_modules",
-      "src"
-    ],
-    "moduleFileExtensions": [
-      "js",
-      "jsx",
-      "ts",
-      "tsx",
-      "json"
-    ],
-    "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/.erb/mocks/fileMock.js",
-      "\\.(css|less|sass|scss)$": "identity-obj-proxy"
-    },
-    "setupFiles": [
-      "./.erb/scripts/check-build-exists.ts"
-    ],
-    "testEnvironment": "jsdom",
-    "testEnvironmentOptions": {
-      "url": "http://localhost/"
-    },
-    "testPathIgnorePatterns": [
-      "release/app/dist",
-      ".erb/dll"
-    ],
-    "transform": {
-      "\\.(ts|tsx|js|jsx)$": "ts-jest"
-    }
-  },
   "dependencies": {
     "@electron/notarize": "^3.0.0",
     "@mantine/core": "^7.17.4",
@@ -92,15 +59,12 @@
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
     "@svgr/webpack": "^8.1.0",
     "@teamsupercell/typings-for-css-modules-loader": "^2.5.2",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.2.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.14.1",
     "@types/pouchdb-browser": "^6.1.5",
     "@types/pouchdb-core": "^7.0.15",
     "@types/react": "^19.0.11",
     "@types/react-dom": "^19.0.4",
-    "@types/react-test-renderer": "^19.0.0",
     "@types/webpack-bundle-analyzer": "^4.7.0",
     "@typescript-eslint/eslint-plugin": "^8.26.1",
     "@typescript-eslint/parser": "^8.26.1",
@@ -137,7 +101,6 @@
     "mini-css-extract-plugin": "^2.9.2",
     "prettier": "^3.5.3",
     "react-refresh": "^0.16.0",
-    "react-test-renderer": "^19.0.0",
     "rimraf": "^6.0.1",
     "sass": "^1.86.0",
     "sass-loader": "^16.0.5",
