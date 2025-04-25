@@ -1,7 +1,9 @@
 import { BrowserWindow, screen } from 'electron';
 
 export async function enableEditMode(mainWindow: BrowserWindow) {
+  mainWindow.setResizable(true);
   mainWindow.setSize(800, 800);
+  mainWindow.setResizable(false);
   mainWindow.setSkipTaskbar(false);
   mainWindow.setAlwaysOnTop(false);
 
@@ -18,7 +20,9 @@ export async function enableEditMode(mainWindow: BrowserWindow) {
 }
 
 export async function disableEditMode(mainWindow: BrowserWindow) {
-  mainWindow.setSize(160, 160); // FIXME: doesn't work
+  mainWindow.setResizable(true);
+  mainWindow.setSize(160, 160);
+  mainWindow.setResizable(false);
   mainWindow.setSkipTaskbar(true);
   mainWindow.setAlwaysOnTop(true);
   mainWindow.webContents.send('ipc--set-edit-mode', false);

@@ -1,15 +1,14 @@
 import { Anchor, Breadcrumbs, Button, SimpleGrid } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import PouchDB from 'pouchdb-browser';
+import { useParams } from 'react-router-dom';
 import { Stage, StageEntity } from '../../types/Stage';
 import Loading from '../common/Loading';
-
-interface LinkedLabel {
-  label: string;
-  id: string;
-}
+import { LinkedLabel } from '../../types/LinkedLabel';
+import StageBreadcrumbs from './components/StageBreadcrumbs';
 
 export default function EditorApp() {
+  const { stageID } = useParams<string>();
   const [loading, setLoading] = useState<boolean>(false);
   const [history, setHistory] = useState<LinkedLabel[]>([]);
   const [currentStage, setCurrentStage] = useState<Stage | null>(null);
@@ -23,12 +22,15 @@ export default function EditorApp() {
   useEffect(() => {
     (async () => {
       if (!currentStage) {
+        if (!stageID) {
+          return;
+        }
         setLoading(true);
-        await loadStage('0');
+        await loadStage(stageID);
         setLoading(false);
       }
     })();
-  }, [currentStage]);
+  }, [currentStage, stageID]);
 
   if (loading) {
     return <Loading />;
@@ -36,26 +38,30 @@ export default function EditorApp() {
 
   return (
     <>
-      <Breadcrumbs>
-        {history.map((item) => (
-          <Anchor key={item.id} href={item.id}>
-            {item.label}
-          </Anchor>
-        ))}
-      </Breadcrumbs>
+      <StageBreadcrumbs history={history} />
+
       <SimpleGrid cols={3}>
-        {currentStage?.children.map((child, index) => (
-          <div key={index}>{child.type}</div>
+        {currentStage?.children.map((child) => (
+          <div key={child.position}>{child.type}</div>
         ))}
       </SimpleGrid>
       <Button
-        onClick={() => {
-          window.electron.ipcRenderer.listInstalledApps().then((res) => {
-            console.log(res);
-          });
+        variant="outline"
+        onClick={async () => {
+          const apps = await window.electron.ipcRenderer.listInstalledApps();
+          console.log(apps);
         }}
       >
-        ghhh
+        Log installed apps
+      </Button>
+
+      <Button
+        variant="outline"
+        onClick={async () => {
+          console.log('Shortcut added');
+        }}
+      >
+        Add shortcut
       </Button>
     </>
   );

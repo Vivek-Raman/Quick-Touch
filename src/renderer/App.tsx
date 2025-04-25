@@ -22,7 +22,7 @@ export default function App() {
   useEffect(() => {
     window.electron.ipcRenderer.on('ipc--set-edit-mode', async (editMode) => {
       if (editMode) {
-        await navigate('/editor');
+        await navigate('/editor/0');
       } else {
         await navigate('/');
       }

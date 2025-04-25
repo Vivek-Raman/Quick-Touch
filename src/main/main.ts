@@ -5,7 +5,7 @@ import { app, BrowserWindow, shell, screen, Menu } from 'electron';
 import MenuBuilder from './menu';
 import { installExtensions, isDebug, resolveHtmlPath } from './util';
 import AppUpdater from './updater';
-import loadAddons from './addons';
+import loadAddons from './ipc/addon-installed-apps';
 
 let mainWindow: BrowserWindow | null = null;
 
