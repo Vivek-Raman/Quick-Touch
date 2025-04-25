@@ -1,7 +1,7 @@
-import { ContainerItem } from '../../../types/Item';
+import { ContainerShortcut } from '../../../types/Shortcut';
 
 interface ContainerProps {
-  item: ContainerItem;
+  item: ContainerShortcut;
   doUpdate: Function;
 }
 

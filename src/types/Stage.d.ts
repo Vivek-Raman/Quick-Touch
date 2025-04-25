@@ -1,9 +1,9 @@
 import type PouchDB from 'pouchdb-browser';
-import { Item } from './Item';
+import { Shortcut } from './Shortcut';
 
 export interface Stage {
   name: string;
-  children: Item[];
+  children: Shortcut[];
 }
 
 export type StageEntity = Stage & PouchDB.Core.IdMeta & PouchDB.Core.GetMeta;

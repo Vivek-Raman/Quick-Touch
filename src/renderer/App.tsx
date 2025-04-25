@@ -3,14 +3,16 @@ import { useCallback, useEffect, useState } from 'react';
 import PouchDb from 'pouchdb-browser';
 import { StageEntity } from '../types/Stage';
 import Loading from './common/Loading';
+import { Config } from '../types/Config';
+import ConfigKey from './enums/ConfigKey';
 
 export default function App() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(true);
 
   const checkFirstTimeUser = useCallback(async () => {
-    const db = new PouchDb<StageEntity>('stage');
-    const root = await db.get('0').catch(() => {});
+    const db = new PouchDb<Config>('config');
+    const root = await db.get(ConfigKey.SETUP_COMPLETE).catch(() => {});
     if (!root) {
       // No root element found; redirecting to onboarding
       await navigate('/first-launch');
@@ -28,17 +30,16 @@ export default function App() {
       }
     });
 
-    window.electron.ipcRenderer.on(
-      'ipc--dev--flush-stage-db',
-      async (flush) => {
-        if (!flush) return;
-        setLoading(true);
-        const db = new PouchDb<StageEntity>('stage');
-        await db.destroy();
-        await checkFirstTimeUser();
-        setLoading(false);
-      },
-    );
+    window.electron.ipcRenderer.on('ipc--dev--flush-db', async (flush) => {
+      if (!flush) return;
+      setLoading(true);
+      const db = new PouchDb<StageEntity>('stage');
+      await db.destroy();
+      const configDb = new PouchDb<Config>('config');
+      await configDb.destroy();
+      await checkFirstTimeUser();
+      setLoading(false);
+    });
   }, [checkFirstTimeUser, navigate]);
 
   useEffect(() => {

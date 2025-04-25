@@ -1,0 +1,2 @@
+export const SHORTCUTS_IN_STAGE = 8;
+export const CENTER_INDEX = SHORTCUTS_IN_STAGE / 2;

@@ -64,9 +64,9 @@ export default class MenuBuilder {
         },
       },
       {
-        label: 'Flush stage DB',
+        label: 'Flush PouchDB',
         click: () => {
-          this.mainWindow.webContents.send('ipc--dev--flush-stage-db', true);
+          this.mainWindow.webContents.send('ipc--dev--flush-db', true);
         },
       },
     ];

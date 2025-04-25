@@ -6,6 +6,7 @@ import StageProvider from './layout/StageProvider';
 import Onboarding from './onboarding/Onboarding';
 import App from './App';
 import './App.css';
+import '@mantine/core/styles.css';
 
 const theme = createTheme({
   primaryColor: 'teal',
@@ -14,7 +15,7 @@ const theme = createTheme({
 const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
 root.render(
-  <MantineProvider theme={theme}>
+  <MantineProvider theme={theme} defaultColorScheme="dark">
     <MemoryRouter>
       <Routes>
         <Route path="/" element={<App />} />

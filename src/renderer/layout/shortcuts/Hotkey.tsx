@@ -1,7 +1,7 @@
-import { HotkeyItem } from '../../../types/Item';
+import { HotkeyShortcut } from '../../../types/Shortcut';
 
 interface HotkeyProps {
-  item: HotkeyItem;
+  item: HotkeyShortcut;
 }
 
 export default function Hotkey({ item }: HotkeyProps) {

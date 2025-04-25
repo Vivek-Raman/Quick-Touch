@@ -1,8 +1,7 @@
 import type PouchDB from 'pouchdb-browser';
 
-export interface Config {
-  key: string;
+export interface Config extends PouchDB.Core.IdMeta {
   value: string;
 }
 
-export type ConfigEntity = Config & PouchDB.Core.IdMeta & PouchDB.Core.GetMeta;
+export type ConfigEntity = Config & PouchDB.Core.GetMeta;

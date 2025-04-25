@@ -2,7 +2,7 @@
 /* eslint no-unused-vars: off */
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
-export type Channels = 'ipc--set-edit-mode' | 'ipc--dev--flush-stage-db';
+export type Channels = 'ipc--set-edit-mode' | 'ipc--dev--flush-db';
 
 const electronHandler = {
   ipcRenderer: {

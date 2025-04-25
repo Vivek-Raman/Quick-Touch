@@ -7,9 +7,8 @@ export async function enableEditMode(mainWindow: BrowserWindow) {
   mainWindow.setSkipTaskbar(false);
   mainWindow.setAlwaysOnTop(false);
 
-  // Get the primary display
-  const primaryDisplay = screen.getPrimaryDisplay();
-  const { width, height } = primaryDisplay.workAreaSize;
+  const display = screen.getDisplayMatching(mainWindow.getBounds());
+  const { width, height } = display.workAreaSize;
 
   // Calculate the center position
   const x = Math.floor((width - 800) / 2);

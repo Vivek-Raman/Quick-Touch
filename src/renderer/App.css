@@ -1,17 +1,12 @@
 body {
   user-select: none;
-  app-region: drag;
+  background-color: grey;
   position: relative;
-  background: linear-gradient(
-    200.96deg,
-    #fedc2a -29.09%,
-    #dd5789 51.77%,
-    #7a2c9e 129.35%
-  );
+  app-region: drag;
   height: 100vh;
   overflow-y: hidden;
 }
 
 button {
-  app-region: no-drag;
+  app-region: no-drag !important;
 }
