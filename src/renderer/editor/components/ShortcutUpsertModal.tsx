@@ -1,15 +1,11 @@
-import {
-  SegmentedControl,
-  SegmentedControlItem,
-  Stack,
-  TextInput,
-} from '@mantine/core';
+import { SegmentedControl, SegmentedControlItem, Stack } from '@mantine/core';
 import { useCallback, useEffect, useState } from 'react';
 import PouchDb from 'pouchdb-browser';
 import ShortcutType from '../../enums/ShortcutType';
 import { Stage } from '../../../types/Stage';
 import { Shortcut } from '../../../types/Shortcut';
 import Loading from '../../common/Loading';
+import NewContainerForm from '../forms/NewContainerForm';
 
 interface ShortcutUpsertModalProps {
   stageID: string;
@@ -39,23 +35,35 @@ export default function ShortcutUpsertModal(props: ShortcutUpsertModalProps) {
   const { stageID, position } = props;
   const [loading, setLoading] = useState<boolean>(false);
   const [shortcutType, setShortcutType] = useState<string>(ShortcutType.EMPTY);
+  const [stage, setStage] = useState<Stage>();
   const [shortcut, setShortcut] = useState<Shortcut>();
 
-  const fetchShortcut = useCallback(async () => {
+  const fetchStage = useCallback(async () => {
     const db = new PouchDb<Stage>('stage');
-    const stage = await db.get(stageID);
+    const theStage = await db.get(stageID);
+    setStage(theStage);
+  }, [stageID]);
 
-    const child = stage.children.filter((s) => s.position === position);
+  // update shortcut when stage or position changes
+  useEffect(() => {
+    const child = stage?.children.filter((s) => s.position === position);
+    if (!child) return;
+    if (child.length <= 0) {
+      throw new Error(
+        `Child not found! Stage: ${stage?.children} and position: ${position}`,
+      );
+    }
     setShortcut(child[0]);
-  }, [stageID, position]);
+  }, [stage, position]);
 
+  // fetch stage on component mount
   useEffect(() => {
     (async () => {
       setLoading(true);
-      await fetchShortcut();
+      await fetchStage();
       setLoading(false);
     })();
-  }, [fetchShortcut]);
+  }, [fetchStage]);
 
   if (loading) return <Loading />;
 
@@ -67,13 +75,21 @@ export default function ShortcutUpsertModal(props: ShortcutUpsertModalProps) {
         onChange={setShortcutType}
       />
 
+      {/* TODO: do https://mantine.dev/core/floating-indicator/#multiple-rows */}
+
       {shortcutType === ShortcutType.EMPTY && (
         <div>Leave this shortcut slot empty.</div>
       )}
+
       {shortcutType === ShortcutType.CONTAINER && (
-        <div>This slot will open a new container of shortcuts.</div>
+        <>
+          <div>This slot will open a new container of shortcuts.</div>
+          <NewContainerForm position={shortcut!.position} />
+        </>
       )}
+
       {shortcutType === ShortcutType.OPEN_FILE && <div>Open File Content</div>}
+
       {shortcutType === ShortcutType.HOTKEY && <div>Hotkey Content</div>}
     </Stack>
   );

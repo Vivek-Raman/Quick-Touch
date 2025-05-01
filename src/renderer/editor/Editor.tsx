@@ -14,8 +14,9 @@ import Back from '../layout/shortcuts/Back';
 
 export default function EditorApp() {
   const { stageID } = useParams<string>();
-  const [showAddModal, { open: openAddModal, close: closeAddModal }] =
+  const [showUpsertModal, { open: openUpsertModal, close: closeUpsertModal }] =
     useDisclosure(false);
+  const [position, setPosition] = useState<number>(-1);
   const [loading, setLoading] = useState<boolean>(false);
   const [history, setHistory] = useState<LinkedLabel[]>([]);
   const [currentStage, setCurrentStage] = useState<Stage | null>(null);
@@ -45,8 +46,12 @@ export default function EditorApp() {
 
   return (
     <Stack p="md">
-      <Modal opened={showAddModal} onClose={closeAddModal} title="Add Shortcut">
-        <ShortcutUpsertModal stageID={stageID!} position={-1} />
+      <Modal
+        opened={showUpsertModal}
+        onClose={closeUpsertModal}
+        title="Add Shortcut"
+      >
+        <ShortcutUpsertModal stageID={stageID!} position={position} />
       </Modal>
 
       <StageBreadcrumbs history={history} />
@@ -58,7 +63,14 @@ export default function EditorApp() {
             components.push(<Back />);
           }
           components.push(
-            <ShortcutPreview key={shortcut.position} shortcut={shortcut} />,
+            <ShortcutPreview
+              key={shortcut.position}
+              shortcut={shortcut}
+              showUpsertModal={() => {
+                setPosition(shortcut.position);
+                openUpsertModal();
+              }}
+            />,
           );
           return components;
         })}
@@ -77,7 +89,7 @@ export default function EditorApp() {
       <Button
         variant="filled"
         onClick={async () => {
-          openAddModal();
+          openUpsertModal();
         }}
       >
         Add shortcut

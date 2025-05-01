@@ -14,7 +14,7 @@ export async function enableEditMode(mainWindow: BrowserWindow) {
   const x = Math.floor((width - 800) / 2);
   const y = Math.floor((height - 800) / 2);
 
-  mainWindow.setPosition(x, y, true);
+  mainWindow.setPosition(display.workArea.x + x, display.workArea.y + y, true);
   mainWindow.webContents.send('ipc--set-edit-mode', true);
 }
 
