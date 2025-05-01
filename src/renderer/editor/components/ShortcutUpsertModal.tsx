@@ -1,4 +1,9 @@
-import { SegmentedControl, SegmentedControlItem, Stack } from '@mantine/core';
+import {
+  Fieldset,
+  SegmentedControl,
+  SegmentedControlItem,
+  Stack,
+} from '@mantine/core';
 import { useCallback, useEffect, useState } from 'react';
 import PouchDb from 'pouchdb-browser';
 import ShortcutType from '../../enums/ShortcutType';
@@ -6,10 +11,11 @@ import { Stage } from '../../../types/Stage';
 import { Shortcut } from '../../../types/Shortcut';
 import Loading from '../../common/Loading';
 import NewContainerForm from '../forms/NewContainerForm';
+import PositionSelector from './PositionSelector';
 
 interface ShortcutUpsertModalProps {
   stageID: string;
-  position: number;
+  initialPosition: number;
 }
 
 const SHORTCUT_TYPES: SegmentedControlItem[] = [
@@ -32,11 +38,11 @@ const SHORTCUT_TYPES: SegmentedControlItem[] = [
 ];
 
 export default function ShortcutUpsertModal(props: ShortcutUpsertModalProps) {
-  const { stageID, position } = props;
+  const { stageID, initialPosition } = props;
   const [loading, setLoading] = useState<boolean>(false);
-  const [shortcutType, setShortcutType] = useState<string>(ShortcutType.EMPTY);
   const [stage, setStage] = useState<Stage>();
-  const [shortcut, setShortcut] = useState<Shortcut>();
+  const [position, setPosition] = useState<number>(initialPosition);
+  const [shortcutType, setShortcutType] = useState<string>(ShortcutType.EMPTY);
 
   const fetchStage = useCallback(async () => {
     const db = new PouchDb<Stage>('stage');
@@ -45,16 +51,16 @@ export default function ShortcutUpsertModal(props: ShortcutUpsertModalProps) {
   }, [stageID]);
 
   // update shortcut when stage or position changes
-  useEffect(() => {
-    const child = stage?.children.filter((s) => s.position === position);
-    if (!child) return;
-    if (child.length <= 0) {
-      throw new Error(
-        `Child not found! Stage: ${stage?.children} and position: ${position}`,
-      );
-    }
-    setShortcut(child[0]);
-  }, [stage, position]);
+  // useEffect(() => {
+  //   const child = stage?.children.filter((s) => s.position === position);
+  //   if (!child) return;
+  //   if (child.length <= 0) {
+  //     throw new Error(
+  //       `Child not found! Stage: ${stage?.children} and position: ${position}`,
+  //     );
+  //   }
+  //   setShortcut(child[0]);
+  // }, [stage, position]);
 
   // fetch stage on component mount
   useEffect(() => {
@@ -75,7 +81,13 @@ export default function ShortcutUpsertModal(props: ShortcutUpsertModalProps) {
         onChange={setShortcutType}
       />
 
-      {/* TODO: do https://mantine.dev/core/floating-indicator/#multiple-rows */}
+      <Fieldset legend="Position">
+        <PositionSelector
+          stage={stage}
+          position={position}
+          setPosition={setPosition}
+        />
+      </Fieldset>
 
       {shortcutType === ShortcutType.EMPTY && (
         <div>Leave this shortcut slot empty.</div>
@@ -84,7 +96,7 @@ export default function ShortcutUpsertModal(props: ShortcutUpsertModalProps) {
       {shortcutType === ShortcutType.CONTAINER && (
         <>
           <div>This slot will open a new container of shortcuts.</div>
-          <NewContainerForm position={shortcut!.position} />
+          <NewContainerForm stage={stage} position={position} />
         </>
       )}
 

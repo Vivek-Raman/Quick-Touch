@@ -11,23 +11,25 @@ import Container from './shortcuts/Container';
 import Hotkey from './shortcuts/Hotkey';
 import Loading from '../common/Loading';
 import ShortcutType from '../enums/ShortcutType';
+import { CENTER_INDEX } from '../common/constants';
+import Back from './shortcuts/Back';
 
 export default function StageProvider() {
   const [loading, setLoading] = useState<boolean>(false);
   // TODO: use saved initial stage
   const [stageId, setStageId] = useState<string>('0');
-  const [items, setItems] = useState<Shortcut[]>([]);
+  const [shortcuts, setShortcuts] = useState<Shortcut[]>([]);
 
   const loadStage = async (id: string) => {
     setLoading(true);
-    setItems([]);
+    setShortcuts([]);
 
     const db = new PouchDB<Stage>('stage');
     // db.info().then(console.info);
 
     const stage: StageEntity = await db.get(id);
     if (!stage) return;
-    setItems(stage.children);
+    setShortcuts(stage.children);
     setLoading(false);
   };
 
@@ -40,29 +42,31 @@ export default function StageProvider() {
   if (loading) return <Loading />;
   return (
     <SimpleGrid cols={3}>
-      {items.map((item) => {
-        if (item.type === ShortcutType.EMPTY) {
-          return <>--</>;
+      {shortcuts.flatMap((shortcut, index) => {
+        const elements = [];
+        if (index === CENTER_INDEX) {
+          elements.push(<Back />);
         }
-        if (item.type === ShortcutType.CONTAINER) {
-          return (
+        if (shortcut.type === ShortcutType.EMPTY) {
+          elements.push(<div>q</div>);
+        } else if (shortcut.type === ShortcutType.CONTAINER) {
+          elements.push(
             <Container
-              // key={item.position} // FIXME: add key
-              item={item as ContainerShortcut}
+              key={shortcut.position} // FIXME: add key
+              item={shortcut as ContainerShortcut}
               doUpdate={setStageId}
-            />
+            />,
           );
-        }
-        if (item.type === ShortcutType.HOTKEY) {
-          return (
+        } else if (shortcut.type === ShortcutType.HOTKEY) {
+          elements.push(
             <Hotkey
               // key={item.position} // FIXME: add key
-              item={item as HotkeyShortcut}
-            />
+              item={shortcut as HotkeyShortcut}
+            />,
           );
         }
 
-        return <>huh?</>;
+        return elements;
       })}
     </SimpleGrid>
   );

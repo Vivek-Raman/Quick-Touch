@@ -11,5 +11,9 @@ export default function Back() {
     }
   };
 
-  return <Button onClick={goBack}>Back</Button>;
+  return (
+    <Button key="x" onClick={goBack}>
+      Back
+    </Button>
+  );
 }

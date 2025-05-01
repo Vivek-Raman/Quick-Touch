@@ -51,7 +51,7 @@ export default function EditorApp() {
         onClose={closeUpsertModal}
         title="Add Shortcut"
       >
-        <ShortcutUpsertModal stageID={stageID!} position={position} />
+        <ShortcutUpsertModal stageID={stageID!} initialPosition={position} />
       </Modal>
 
       <StageBreadcrumbs history={history} />
@@ -84,15 +84,6 @@ export default function EditorApp() {
         }}
       >
         Log installed apps
-      </Button>
-
-      <Button
-        variant="filled"
-        onClick={async () => {
-          openUpsertModal();
-        }}
-      >
-        Add shortcut
       </Button>
     </Stack>
   );
