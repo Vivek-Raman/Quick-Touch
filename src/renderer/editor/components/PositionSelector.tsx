@@ -2,17 +2,16 @@ import {
   FloatingIndicator,
   Group,
   SimpleGrid,
-  Text,
   UnstyledButton,
 } from '@mantine/core';
 import { useState } from 'react';
 import { Stage } from '../../../types/Stage';
-import ShortcutType from '../../enums/ShortcutType';
 import { CENTER_INDEX } from '../../common/constants';
 import Loading from '../../common/Loading';
+import ShortcutPreview from './ShortcutPreview';
 
 interface PositionSelectorProps {
-  stage: Stage | undefined;
+  stage: Stage | null;
   position: number;
   setPosition: (position: number) => void;
 }
@@ -41,7 +40,7 @@ export default function PositionSelector(props: PositionSelectorProps) {
         style={{
           borderRadius: 'var(--mantine-radius-md)',
           boxShadow: 'var(--mantine-shadow-md)',
-          border: '1px solid white',
+          border: '1px solid teal',
         }}
       />
       <SimpleGrid cols={3}>
@@ -64,11 +63,10 @@ export default function PositionSelector(props: PositionSelectorProps) {
               key={child.position}
               ref={setPositionRef(child.position)}
               onClick={() => setPosition(child.position)}
-              disabled={child.type !== ShortcutType.EMPTY}
               p="md"
               style={{ textAlign: 'center', verticalAlign: 'middle' }}
             >
-              <Text truncate="end">{child.type}</Text>
+              <ShortcutPreview shortcut={child} />
             </UnstyledButton>,
           );
 

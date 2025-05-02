@@ -4,7 +4,8 @@ export interface Shortcut {
 }
 
 export interface ContainerShortcut extends Shortcut {
-  stageId: string;
+  stageID: string;
+  stageName: string;
 }
 
 export interface HotkeyShortcut extends Shortcut {

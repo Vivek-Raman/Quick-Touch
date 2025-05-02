@@ -10,3 +10,8 @@ body {
 button {
   app-region: no-drag !important;
 }
+
+#root {
+  height: 100%;
+  width: 100%;
+}

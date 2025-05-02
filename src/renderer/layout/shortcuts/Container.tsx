@@ -8,8 +8,8 @@ interface ContainerProps {
 export default function Container(props: ContainerProps) {
   const { item, doUpdate } = props;
   return (
-    <button type="button" onClick={() => doUpdate(item.stageId)}>
-      {item.stageId}
+    <button type="button" onClick={() => doUpdate(item.stageID)}>
+      {item.stageID}
     </button>
   );
 }
