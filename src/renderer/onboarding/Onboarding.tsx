@@ -23,7 +23,7 @@ export default function Onboarding() {
   };
 
   const start = () => {
-    navigate('/editor');
+    navigate('/editor/0');
   };
 
   useEffect(() => {

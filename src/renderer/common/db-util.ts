@@ -7,10 +7,11 @@ import { SHORTCUTS_IN_STAGE } from './constants';
 export const createStage = async (
   db: PouchDB.Database<Stage>,
   stageId: string,
+  stageName: string,
 ) => {
-  await db.put({
+  return db.put({
     _id: stageId,
-    name: 'New Stage',
+    name: stageName,
     children: [
       ...Array.from({ length: SHORTCUTS_IN_STAGE }).map((_, i) => {
         return { position: i, type: ShortcutType.EMPTY };

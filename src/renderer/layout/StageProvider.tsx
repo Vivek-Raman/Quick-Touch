@@ -48,11 +48,11 @@ export default function StageProvider() {
           elements.push(<Back />);
         }
         if (shortcut.type === ShortcutType.EMPTY) {
-          elements.push(<div>q</div>);
+          elements.push(<div />);
         } else if (shortcut.type === ShortcutType.CONTAINER) {
           elements.push(
             <Container
-              key={shortcut.position} // FIXME: add key
+              key={shortcut.position}
               item={shortcut as ContainerShortcut}
               doUpdate={setStageId}
             />,

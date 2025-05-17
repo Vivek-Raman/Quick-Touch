@@ -4,21 +4,18 @@ import {
   SimpleGrid,
   UnstyledButton,
 } from '@mantine/core';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Stage } from '../../../types/Stage';
 import { CENTER_INDEX } from '../../common/constants';
 import Loading from '../../common/Loading';
 import ShortcutPreview from './ShortcutPreview';
-
-interface PositionSelectorProps {
-  stage: Stage | null;
-  position: number;
-  setPosition: (position: number) => void;
-}
+import PositionContext from '../context/PositionContext';
+import StageContext from '../context/StageContext';
 
 // reference: https://mantine.dev/core/floating-indicator/#multiple-rows
-export default function PositionSelector(props: PositionSelectorProps) {
-  const { stage, position, setPosition } = props;
+export default function PositionSelector() {
+  const { stage } = useContext(StageContext);
+  const { position, setPosition } = useContext(PositionContext);
   const [rootRef, setRootRef] = useState<HTMLElement | null>(null);
   const [positionRefs, setPositionRefs] = useState<
     Record<number, HTMLButtonElement>

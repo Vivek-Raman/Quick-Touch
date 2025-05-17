@@ -1,10 +1,4 @@
-import {
-  Button,
-  Fieldset,
-  SegmentedControl,
-  Space,
-  Stack,
-} from '@mantine/core';
+import { Button, Fieldset, Space, Stack } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import PouchDB from 'pouchdb-browser';
 import { useParams } from 'react-router-dom';
@@ -12,19 +6,17 @@ import { Stage, StageEntity } from '../../types/Stage';
 import Loading from '../common/Loading';
 import { LinkedLabel } from '../../types/LinkedLabel';
 import StageBreadcrumbs from './components/StageBreadcrumbs';
-import { SHORTCUT_TYPES } from '../common/constants';
 import PositionSelector from './components/PositionSelector';
-import { ContainerShortcut, Shortcut } from '../../types/Shortcut';
-import ShortcutType from '../enums/ShortcutType';
-import NewContainerForm from './forms/NewContainerForm';
+import EditShortcutForm from './forms/EditShortcutForm';
+import StageContext from './context/StageContext';
+import PositionContext from './context/PositionContext';
 
 export default function EditorApp() {
-  const { stageID } = useParams<string>();
+  const { stageID } = useParams<string>(); // TODO: use props instead
   const [loading, setLoading] = useState<boolean>(false);
   const [history, setHistory] = useState<LinkedLabel[]>([]);
   const [currentStage, setCurrentStage] = useState<Stage | null>(null);
   const [position, setPosition] = useState<number>(-1);
-  const [currentShortcut, setCurrentShortcut] = useState<Shortcut | null>(null);
 
   const loadStage = async (stageId: string) => {
     const db = new PouchDB<StageEntity>('stage');
@@ -45,11 +37,6 @@ export default function EditorApp() {
     })();
   }, [currentStage, stageID]);
 
-  useEffect(() => {
-    if (!currentStage) return;
-    setCurrentShortcut(currentStage.children[position]);
-  }, [currentStage, position]);
-
   if (loading) {
     return <Loading />;
   }
@@ -58,44 +45,33 @@ export default function EditorApp() {
     <>
       <StageBreadcrumbs history={history} />
 
-      <Stack p="md" justify="center" align="center" h="100%">
-        <Fieldset legend="Position">
-          <PositionSelector
-            stage={currentStage}
-            position={position}
-            setPosition={setPosition}
-          />
-        </Fieldset>
+      <StageContext.Provider
+        value={{ stage: currentStage, setStage: setCurrentStage }}
+      >
+        <PositionContext.Provider value={{ position, setPosition }}>
+          <Stack p="md" justify="center" align="center" h="100%">
+            <Fieldset legend="Position">
+              <PositionSelector />
+            </Fieldset>
+            <Space h="md" />
 
-        <Space h="md" />
+            {!!currentStage && position >= 0 && (
+              <EditShortcutForm stageID={stageID!} />
+            )}
 
-        <SegmentedControl
-          data={SHORTCUT_TYPES}
-          value={currentShortcut?.type}
-          // TODO: onChange={setShortcutType}
-        />
-
-        <Space h="sm" />
-
-        {currentShortcut?.type === ShortcutType.CONTAINER && (
-          <NewContainerForm
-            initialValues={{
-              parentID: (currentShortcut as ContainerShortcut).stageID,
-              stageName: (currentShortcut as ContainerShortcut).stageName,
-            }}
-          />
-        )}
-
-        <Button
-          variant="outline"
-          onClick={async () => {
-            const apps = await window.electron.ipcRenderer.listInstalledApps();
-            console.log(apps);
-          }}
-        >
-          Log installed apps
-        </Button>
-      </Stack>
+            <Button
+              variant="outline"
+              onClick={async () => {
+                const apps =
+                  await window.electron.ipcRenderer.listInstalledApps();
+                console.log(apps);
+              }}
+            >
+              Log installed apps
+            </Button>
+          </Stack>
+        </PositionContext.Provider>
+      </StageContext.Provider>
     </>
   );
 }
