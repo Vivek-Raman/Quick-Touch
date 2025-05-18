@@ -1,5 +1,6 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 import { Button, Fieldset, Space, Stack } from '@mantine/core';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import PouchDB from 'pouchdb-browser';
 import { useParams } from 'react-router-dom';
 import { Stage, StageEntity } from '../../types/Stage';
@@ -10,53 +11,75 @@ import PositionSelector from './components/PositionSelector';
 import EditShortcutForm from './forms/EditShortcutForm';
 import StageContext from './context/StageContext';
 import PositionContext from './context/PositionContext';
+import HistoryContext from './context/HistoryContext';
 
-export default function EditorApp() {
-  const { stageID } = useParams<string>(); // TODO: use props instead
+interface EditorProps {
+  initialStageID: string;
+}
+
+export default function EditorApp(props: EditorProps) {
+  const { initialStageID } = props;
   const [loading, setLoading] = useState<boolean>(false);
   const [history, setHistory] = useState<LinkedLabel[]>([]);
-  const [currentStage, setCurrentStage] = useState<Stage | null>(null);
+  const [currentStage, setCurrentStage] = useState<
+    (Stage & PouchDB.Core.IdMeta) | null
+  >(null);
   const [position, setPosition] = useState<number>(-1);
+
+  const pushHistory = useCallback((toAdd: LinkedLabel) => {
+    if (history.lastIndexOf(toAdd) !== -1) {
+      return;
+    }
+    setHistory((prev) => [...prev, toAdd]);
+  }, []);
+
+  const popHistory = useCallback(() => {
+    setHistory((prev) => {
+      const newHistory = [...prev];
+      newHistory.pop();
+      return newHistory;
+    });
+  }, []);
 
   const loadStage = async (stageId: string) => {
     const db = new PouchDB<StageEntity>('stage');
-    const stage = await db.get(stageId);
-    setCurrentStage(stage);
+    return db.get(stageId);
   };
 
+  // load initial stage
   useEffect(() => {
     (async () => {
-      if (!currentStage) {
-        if (!stageID) {
-          return;
-        }
-        setLoading(true);
-        await loadStage(stageID);
-        setLoading(false);
-      }
+      setLoading(true);
+      const stage = await loadStage(initialStageID);
+      setCurrentStage(stage);
+      pushHistory({ id: stage._id, label: stage.name });
+      setLoading(false);
     })();
-  }, [currentStage, stageID]);
+  }, [initialStageID, pushHistory]);
 
   if (loading) {
     return <Loading />;
   }
 
   return (
-    <>
-      <StageBreadcrumbs history={history} />
-
+    <HistoryContext.Provider value={{ history, pushHistory, popHistory }}>
       <StageContext.Provider
-        value={{ stage: currentStage, setStage: setCurrentStage }}
+        value={{
+          stage: currentStage,
+          setStage: setCurrentStage,
+        }}
       >
         <PositionContext.Provider value={{ position, setPosition }}>
           <Stack p="md" justify="center" align="center" h="100%">
+            <StageBreadcrumbs history={history} />
+            <Space h="md" />
             <Fieldset legend="Position">
               <PositionSelector />
             </Fieldset>
             <Space h="md" />
 
             {!!currentStage && position >= 0 && (
-              <EditShortcutForm stageID={stageID!} />
+              <EditShortcutForm stageID={initialStageID!} />
             )}
 
             <Button
@@ -72,6 +95,6 @@ export default function EditorApp() {
           </Stack>
         </PositionContext.Provider>
       </StageContext.Provider>
-    </>
+    </HistoryContext.Provider>
   );
 }

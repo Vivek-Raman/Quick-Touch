@@ -16,14 +16,14 @@ export default function Onboarding() {
 
   const initializeDB = async () => {
     const db = new PouchDb<Stage>('stage');
-    await createStage(db, '0');
+    await createStage(db, '', '0', 'Root');
     const configDb = new PouchDb<Config>('config');
     await configDb.put({ _id: ConfigKey.STAGE_ID_COUNTER, value: '1' });
     await configDb.put({ _id: ConfigKey.SETUP_COMPLETE, value: 'true' });
   };
 
   const start = () => {
-    navigate('/editor/0');
+    navigate('/stage');
   };
 
   useEffect(() => {

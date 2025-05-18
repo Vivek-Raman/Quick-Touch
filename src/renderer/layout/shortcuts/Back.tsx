@@ -1,14 +1,12 @@
 import { Button } from '@mantine/core';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import StageContext from '../../editor/context/StageContext';
 
 export default function Back() {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const { stage } = useContext(StageContext);
 
   const goBack = () => {
-    if (location.hash.split('/').indexOf('editor') !== -1) {
-      navigate(-1);
-    }
+    stage;
   };
 
   return (

@@ -38,9 +38,7 @@ export default function EditShortcutForm(props: EditShortcutFormProps) {
 
       <Space h="sm" />
 
-      {type === ShortcutType.CONTAINER && (
-        <NewContainerForm parentStageID={stageID} />
-      )}
+      {type === ShortcutType.CONTAINER && <NewContainerForm />}
     </>
   );
 }

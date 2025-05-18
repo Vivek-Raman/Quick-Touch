@@ -1,19 +1,26 @@
-import { Breadcrumbs, Anchor } from '@mantine/core';
-import { LinkedLabel } from '../../../types/LinkedLabel';
+import { Breadcrumbs, UnstyledButton } from '@mantine/core';
+import { useContext } from 'react';
+import HistoryContext from '../context/HistoryContext';
 
-interface StageBreadcrumbsProps {
-  history: LinkedLabel[];
-}
+export default function StageBreadcrumbs() {
+  const { history, popHistory } = useContext(HistoryContext);
 
-export default function StageBreadcrumbs(props: StageBreadcrumbsProps) {
-  const { history } = props;
+  const jumpToStage = (id: string) => {
+    // eslint-disable-next-line no-plusplus
+    for (let i = history.length - 1; i >= 0; --i) {
+      if (history[i].id === id) {
+        popHistory();
+        break;
+      }
+    }
+  };
 
   return (
     <Breadcrumbs>
       {history.map((item) => (
-        <Anchor key={item.id} href={item.id}>
+        <UnstyledButton key={item.id} onClick={jumpToStage}>
           {item.label}
-        </Anchor>
+        </UnstyledButton>
       ))}
     </Breadcrumbs>
   );

@@ -48,7 +48,7 @@ export default function StageProvider() {
           elements.push(<Back />);
         }
         if (shortcut.type === ShortcutType.EMPTY) {
-          elements.push(<div />);
+          elements.push(<div key={shortcut.position} />);
         } else if (shortcut.type === ShortcutType.CONTAINER) {
           elements.push(
             <Container
@@ -60,7 +60,7 @@ export default function StageProvider() {
         } else if (shortcut.type === ShortcutType.HOTKEY) {
           elements.push(
             <Hotkey
-              // key={item.position} // FIXME: add key
+              key={shortcut.position}
               item={shortcut as HotkeyShortcut}
             />,
           );

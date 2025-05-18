@@ -12,17 +12,12 @@ import { Config, ConfigEntity } from '../../../../types/Config';
 import StageContext from '../../context/StageContext';
 import PositionContext from '../../context/PositionContext';
 import { createStage } from '../../../common/db-util';
-import { useNavigate } from 'react-router-dom';
+import HistoryContext from '../../context/HistoryContext';
 
-interface NewContainerFormProps {
-  parentStageID: string;
-}
-
-export default function NewContainerForm(props: NewContainerFormProps) {
-  const { parentStageID } = props;
-  const navigate = useNavigate();
+export default function NewContainerForm() {
   const { stage: parentStage, setStage: setParentStage } =
     useContext(StageContext)!;
+  const { pushHistory } = useContext(HistoryContext);
   const { position } = useContext(PositionContext);
   const [updateMode, setUpdateMode] = useState<boolean>(false);
 
@@ -32,12 +27,14 @@ export default function NewContainerForm(props: NewContainerFormProps) {
     initialValues: {
       stageID: '',
       stageName: '',
-      position,
     },
   });
 
-  const handleSubmit = async (values: any) => {
-    console.log('values', values);
+  const getContainerShortcut = () => {
+    return parentStage!.children[position] as ContainerShortcut;
+  };
+
+  const handleSubmit = async (values: typeof containerForm.values) => {
     const stageDb = new PouchDb<Stage>('stage');
     const configDb = new PouchDb<Config>('config');
     const stageCounterConfig = await configDb.get<ConfigEntity>(
@@ -45,13 +42,14 @@ export default function NewContainerForm(props: NewContainerFormProps) {
     );
 
     // update shortcut in parent stage
-    const parent: StageEntity = await stageDb.get(parentStageID);
-    const shortcut = parent!.children[values.position] as ContainerShortcut;
+    const parent: StageEntity = await stageDb.get(parentStage!._id);
+    const shortcut = parent!.children[position] as ContainerShortcut;
     shortcut.type = ShortcutType.CONTAINER;
     if (!updateMode) {
       // insert new stage
       const { id } = await createStage(
         stageDb,
+        parent._id,
         stageCounterConfig.value,
         values.stageName,
       );
@@ -72,13 +70,12 @@ export default function NewContainerForm(props: NewContainerFormProps) {
 
   // load saved shortcut data if available
   useEffect(() => {
-    const shortcut = parentStage!.children[position] as ContainerShortcut;
+    const shortcut = getContainerShortcut();
     if (shortcut.type === ShortcutType.CONTAINER) {
       setUpdateMode(true);
       containerForm.setValues({
         stageID: shortcut.stageID,
         stageName: shortcut.stageName,
-        position,
       });
     }
   }, [parentStage, position]);
@@ -96,13 +93,13 @@ export default function NewContainerForm(props: NewContainerFormProps) {
         {updateMode && (
           <Button
             variant="subtle"
-            onClick={() => {
-              console.log(
-                `/editor/${(parentStage!.children[position] as ContainerShortcut).stageID}`,
+            onClick={async () => {
+              const db = new PouchDb<StageEntity>('stage');
+              const stage = await db.get<StageEntity>(
+                getContainerShortcut().stageID,
               );
-              navigate(
-                `/editor/${(parentStage!.children[position] as ContainerShortcut).stageID}`,
-              );
+              pushHistory({ id: stage._id, label: stage.name });
+              setParentStage(stage);
             }}
           >
             Open container

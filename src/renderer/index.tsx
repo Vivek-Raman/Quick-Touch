@@ -20,7 +20,7 @@ root.render(
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/stage" element={<StageProvider />} />
-        <Route path="/editor/:stageID" element={<EditorApp />} />
+        <Route path="/editor" element={<EditorApp initialStageID="0" />} />
         <Route path="/first-launch" element={<Onboarding />} />
       </Routes>
     </MemoryRouter>

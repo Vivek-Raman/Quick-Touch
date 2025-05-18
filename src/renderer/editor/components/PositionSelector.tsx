@@ -1,25 +1,38 @@
 import {
+  Button,
   FloatingIndicator,
   Group,
   SimpleGrid,
   UnstyledButton,
 } from '@mantine/core';
 import { useContext, useState } from 'react';
-import { Stage } from '../../../types/Stage';
+import PouchDb from 'pouchdb-browser';
 import { CENTER_INDEX } from '../../common/constants';
 import Loading from '../../common/Loading';
 import ShortcutPreview from './ShortcutPreview';
 import PositionContext from '../context/PositionContext';
 import StageContext from '../context/StageContext';
+import HistoryContext from '../context/HistoryContext';
+import { Stage } from '../../../types/Stage';
 
 // reference: https://mantine.dev/core/floating-indicator/#multiple-rows
 export default function PositionSelector() {
-  const { stage } = useContext(StageContext);
+  const { stage, setStage } = useContext(StageContext);
   const { position, setPosition } = useContext(PositionContext);
+  const { history, popHistory } = useContext(HistoryContext);
   const [rootRef, setRootRef] = useState<HTMLElement | null>(null);
   const [positionRefs, setPositionRefs] = useState<
     Record<number, HTMLButtonElement>
   >({});
+
+  const goBack = async () => {
+    if (history.length <= 1) return;
+    const db = new PouchDb<Stage>('stage');
+    const prevStageID = history[history.length - 2].id;
+    const prevStage = await db.get(prevStageID);
+    popHistory();
+    setStage(prevStage);
+  };
 
   const setPositionRef = (pos: number) => (node: HTMLButtonElement) => {
     positionRefs[pos] = node;
@@ -45,13 +58,17 @@ export default function PositionSelector() {
           const elements = [];
           if (index === CENTER_INDEX) {
             elements.push(
-              <UnstyledButton
-                disabled
-                p="md"
+              <Button
+                disabled={history.length <= 1}
+                key="x"
+                h="100%"
+                w="100%"
+                variant="outline"
                 style={{ textAlign: 'center', verticalAlign: 'middle' }}
+                onClick={goBack}
               >
                 Back
-              </UnstyledButton>,
+              </Button>,
             );
           }
 
