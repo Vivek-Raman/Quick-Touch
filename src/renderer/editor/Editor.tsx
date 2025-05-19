@@ -71,7 +71,7 @@ export default function EditorApp(props: EditorProps) {
       >
         <PositionContext.Provider value={{ position, setPosition }}>
           <Stack p="md" justify="center" align="center" h="100%">
-            <StageBreadcrumbs history={history} />
+            <StageBreadcrumbs />
             <Space h="md" />
             <Fieldset legend="Position">
               <PositionSelector />

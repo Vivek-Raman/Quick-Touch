@@ -5,9 +5,9 @@ import HistoryContext from '../context/HistoryContext';
 export default function StageBreadcrumbs() {
   const { history, popHistory } = useContext(HistoryContext);
 
-  const jumpToStage = (id: string) => {
+  const jumpToStage = (id: string, index: number) => {
     // eslint-disable-next-line no-plusplus
-    for (let i = history.length - 1; i >= 0; --i) {
+    for (let i = index; i < history.length; ++i) {
       if (history[i].id === id) {
         popHistory();
         break;
@@ -17,8 +17,11 @@ export default function StageBreadcrumbs() {
 
   return (
     <Breadcrumbs>
-      {history.map((item) => (
-        <UnstyledButton key={item.id} onClick={jumpToStage}>
+      {history.map((item, index) => (
+        <UnstyledButton
+          key={item.id}
+          onClick={() => jumpToStage(item.id, index)}
+        >
           {item.label}
         </UnstyledButton>
       ))}
