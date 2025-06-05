@@ -1,11 +1,12 @@
 import { SegmentedControl, Space, Text } from '@mantine/core';
-import { Children, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Shortcut } from '../../../types/Shortcut';
 import { SHORTCUT_TYPES } from '../../common/constants';
 import ShortcutType from '../../enums/ShortcutType';
-import NewContainerForm from './by-type/NewContainerForm';
+import ContainerForm from './by-type/ContainerForm';
 import StageContext from '../context/StageContext';
 import PositionContext from '../context/PositionContext';
+import ScriptForm from './by-type/ScriptForm';
 
 interface EditShortcutFormProps {
   stageID: string;
@@ -38,7 +39,8 @@ export default function EditShortcutForm(props: EditShortcutFormProps) {
 
       <Space h="sm" />
 
-      {type === ShortcutType.CONTAINER && <NewContainerForm />}
+      {type === ShortcutType.CONTAINER && <ContainerForm />}
+      {type === ShortcutType.SCRIPT && <ScriptForm />}
     </>
   );
 }

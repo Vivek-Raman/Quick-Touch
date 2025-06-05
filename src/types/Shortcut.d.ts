@@ -11,3 +11,7 @@ export interface ContainerShortcut extends Shortcut {
 export interface HotkeyShortcut extends Shortcut {
   keycode: string;
 }
+
+export interface ScriptShortcut extends Shortcut {
+  script: string;
+}

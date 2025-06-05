@@ -2,7 +2,6 @@
 import { Button, Fieldset, Space, Stack } from '@mantine/core';
 import { useCallback, useEffect, useState } from 'react';
 import PouchDB from 'pouchdb-browser';
-import { useParams } from 'react-router-dom';
 import { Stage, StageEntity } from '../../types/Stage';
 import Loading from '../common/Loading';
 import { LinkedLabel } from '../../types/LinkedLabel';
@@ -20,12 +19,13 @@ interface EditorProps {
 export default function EditorApp(props: EditorProps) {
   const { initialStageID } = props;
   const [loading, setLoading] = useState<boolean>(false);
-  const [history, setHistory] = useState<LinkedLabel[]>([]);
   const [currentStage, setCurrentStage] = useState<
     (Stage & PouchDB.Core.IdMeta) | null
   >(null);
   const [position, setPosition] = useState<number>(-1);
 
+  // History
+  const [history, setHistory] = useState<LinkedLabel[]>([]);
   const pushHistory = useCallback((toAdd: LinkedLabel) => {
     if (history.lastIndexOf(toAdd) !== -1) {
       return;
