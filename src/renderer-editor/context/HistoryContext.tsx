@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { LinkedLabel } from '../../../types/LinkedLabel';
+import { LinkedLabel } from '../../types/LinkedLabel';
 
 const HistoryContext = createContext<{
   history: LinkedLabel[];

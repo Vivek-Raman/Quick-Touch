@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 import type PouchDB from 'pouchdb-browser';
-import { Stage } from '../../../types/Stage';
+import { Stage } from '../../types/Stage';
 
 const StageContext = createContext<{
   stage: (Stage & PouchDB.Core.IdMeta) | null;

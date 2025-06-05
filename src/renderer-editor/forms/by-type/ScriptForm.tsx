@@ -4,11 +4,11 @@ import { Stack, TextInput, Button } from '@mantine/core';
 import PouchDb from 'pouchdb-browser';
 import { useForm } from '@mantine/form';
 import { useContext, useEffect, useState } from 'react';
-import { Stage, StageEntity } from '../../../../types/Stage';
+import { Stage, StageEntity } from '../../../types/Stage';
 import PositionContext from '../../context/PositionContext';
 import StageContext from '../../context/StageContext';
-import ShortcutType from '../../../enums/ShortcutType';
-import { ScriptShortcut } from '../../../../types/Shortcut';
+import ShortcutType from '../../../common/enums/ShortcutType';
+import { ScriptShortcut } from '../../../types/Shortcut';
 
 export default function ScriptForm() {
   const { stage: parentStage, setStage: setParentStage } =

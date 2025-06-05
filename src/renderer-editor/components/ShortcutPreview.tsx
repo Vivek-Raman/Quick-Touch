@@ -1,6 +1,6 @@
 import { Text } from '@mantine/core';
-import { Shortcut } from '../../../types/Shortcut';
-import ShortcutType from '../../enums/ShortcutType';
+import { Shortcut } from '../../types/Shortcut';
+import ShortcutType from '../../common/enums/ShortcutType';
 
 interface ShortcutPreviewProps {
   shortcut: Shortcut;

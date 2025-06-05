@@ -3,6 +3,7 @@
 
 import { URL } from 'url';
 import path from 'path';
+import type { App } from 'electron';
 
 export function resolveHtmlPath(htmlFileName: string) {
   if (process.env.NODE_ENV === 'development') {
@@ -28,4 +29,11 @@ export const installExtensions = async () => {
       forceDownload,
     )
     .catch(console.log);
+};
+
+export const getAssetPath = (app: App, ...paths: string[]): string => {
+  const RESOURCES_PATH = app.isPackaged
+    ? path.join(process.resourcesPath, 'assets')
+    : path.join(__dirname, '../../assets');
+  return path.join(RESOURCES_PATH, ...paths);
 };

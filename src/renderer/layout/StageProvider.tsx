@@ -5,14 +5,16 @@ import type { Stage, StageEntity } from '../../types/Stage';
 import {
   ContainerShortcut,
   HotkeyShortcut,
+  ScriptShortcut,
   Shortcut,
 } from '../../types/Shortcut';
 import Container from './shortcuts/Container';
 import Hotkey from './shortcuts/Hotkey';
-import Loading from '../common/Loading';
-import ShortcutType from '../enums/ShortcutType';
-import { CENTER_INDEX } from '../common/constants';
+import Loading from '../../common/Loading';
+import ShortcutType from '../../common/enums/ShortcutType';
+import { CENTER_INDEX } from '../../common/constants';
 import Back from './shortcuts/Back';
+import Script from './shortcuts/Script';
 
 export default function StageProvider() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -55,6 +57,13 @@ export default function StageProvider() {
               key={shortcut.position}
               item={shortcut as ContainerShortcut}
               doUpdate={setStageId}
+            />,
+          );
+        } else if (shortcut.type === ShortcutType.SCRIPT) {
+          elements.push(
+            <Script
+              key={shortcut.position}
+              item={shortcut as ScriptShortcut}
             />,
           );
         } else if (shortcut.type === ShortcutType.HOTKEY) {

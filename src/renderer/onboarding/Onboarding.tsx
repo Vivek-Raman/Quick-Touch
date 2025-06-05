@@ -3,12 +3,10 @@ import { useEffect, useState } from 'react';
 import { Button, Title } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import { Stage } from '../../types/Stage';
-import Loading from '../common/Loading';
+import Loading from '../../common/Loading';
 import type { Config } from '../../types/Config';
-import ConfigKey from '../enums/ConfigKey';
-import { Shortcut } from '../../types/Shortcut';
-import ShortcutType from '../enums/ShortcutType';
-import { createStage } from '../common/db-util';
+import ConfigKey from '../../common/enums/ConfigKey';
+import { createStage } from '../../common/db-util';
 
 export default function Onboarding() {
   const [loading, setLoading] = useState<boolean>(false);

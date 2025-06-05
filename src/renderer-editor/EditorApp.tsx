@@ -2,9 +2,9 @@
 import { Button, Fieldset, Space, Stack } from '@mantine/core';
 import { useCallback, useEffect, useState } from 'react';
 import PouchDB from 'pouchdb-browser';
-import { Stage, StageEntity } from '../../types/Stage';
+import { Stage, StageEntity } from '../types/Stage';
 import Loading from '../common/Loading';
-import { LinkedLabel } from '../../types/LinkedLabel';
+import { LinkedLabel } from '../types/LinkedLabel';
 import StageBreadcrumbs from './components/StageBreadcrumbs';
 import PositionSelector from './components/PositionSelector';
 import EditShortcutForm from './forms/EditShortcutForm';

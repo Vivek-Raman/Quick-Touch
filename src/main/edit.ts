@@ -23,6 +23,6 @@ export async function disableEditMode(mainWindow: BrowserWindow) {
   mainWindow.setSize(160, 160);
   mainWindow.setResizable(false);
   mainWindow.setSkipTaskbar(true);
-  mainWindow.setAlwaysOnTop(true);
+  mainWindow.setAlwaysOnTop(true, 'floating');
   mainWindow.webContents.send('ipc--set-edit-mode', false);
 }

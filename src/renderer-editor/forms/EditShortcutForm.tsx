@@ -1,8 +1,8 @@
 import { SegmentedControl, Space, Text } from '@mantine/core';
 import { useContext, useEffect, useState } from 'react';
-import { Shortcut } from '../../../types/Shortcut';
+import { Shortcut } from '../../types/Shortcut';
 import { SHORTCUT_TYPES } from '../../common/constants';
-import ShortcutType from '../../enums/ShortcutType';
+import ShortcutType from '../../common/enums/ShortcutType';
 import ContainerForm from './by-type/ContainerForm';
 import StageContext from '../context/StageContext';
 import PositionContext from '../context/PositionContext';

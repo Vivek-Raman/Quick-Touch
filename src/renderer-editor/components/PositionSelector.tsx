@@ -13,7 +13,7 @@ import ShortcutPreview from './ShortcutPreview';
 import PositionContext from '../context/PositionContext';
 import StageContext from '../context/StageContext';
 import HistoryContext from '../context/HistoryContext';
-import { Stage } from '../../../types/Stage';
+import { Stage } from '../../types/Stage';
 
 // reference: https://mantine.dev/core/floating-indicator/#multiple-rows
 export default function PositionSelector() {
