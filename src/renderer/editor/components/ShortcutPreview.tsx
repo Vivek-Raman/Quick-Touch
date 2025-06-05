@@ -15,6 +15,9 @@ export default function ShortcutPreview(props: ShortcutPreviewProps) {
   if (shortcut.type === ShortcutType.CONTAINER) {
     return <Text>Container</Text>;
   }
+  if (shortcut.type === ShortcutType.SCRIPT) {
+    return <Text>Script</Text>;
+  }
 
   return <div>wat</div>;
 }

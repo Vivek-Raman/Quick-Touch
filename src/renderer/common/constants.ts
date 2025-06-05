@@ -14,6 +14,10 @@ export const SHORTCUT_TYPES: SegmentedControlItem[] = [
     value: ShortcutType.CONTAINER,
   },
   {
+    label: 'Script',
+    value: ShortcutType.SCRIPT,
+  },
+  {
     label: 'Open File',
     value: ShortcutType.OPEN_FILE,
   },

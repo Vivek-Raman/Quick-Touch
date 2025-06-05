@@ -14,7 +14,7 @@ import PositionContext from '../../context/PositionContext';
 import { createStage } from '../../../common/db-util';
 import HistoryContext from '../../context/HistoryContext';
 
-export default function NewContainerForm() {
+export default function ContainerForm() {
   const { stage: parentStage, setStage: setParentStage } =
     useContext(StageContext)!;
   const { pushHistory } = useContext(HistoryContext);
