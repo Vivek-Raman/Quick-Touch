@@ -11,6 +11,6 @@ const container = document.getElementById('root-editor') as HTMLElement;
 const root = createRoot(container);
 root.render(
   <MantineProvider theme={theme} defaultColorScheme="dark">
-    <EditorApp initialStageID="0" />
+    <EditorApp />
   </MantineProvider>,
 );
