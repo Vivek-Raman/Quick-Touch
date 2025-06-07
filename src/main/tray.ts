@@ -13,11 +13,18 @@ export default class AppTray {
     this.tray.setContextMenu(
       Menu.buildFromTemplate([
         {
+          icon: getAssetPath(app, 'icon.png'),
+          enabled: false,
+          label: 'Quick-Touch',
+        },
+        { type: 'separator' },
+        {
           label: 'Edit screen',
           click: () => {
             EditV2.openEditScreen();
           },
         },
+        { type: 'separator' },
         {
           label: 'Exit',
           click: () => {

@@ -5,8 +5,8 @@ import PouchDb from 'pouchdb-browser';
 import { useForm } from '@mantine/form';
 import { useContext, useEffect, useState } from 'react';
 import { Stage, StageEntity } from '../../../types/Stage';
-import PositionContext from '../../context/PositionContext';
-import StageContext from '../../context/StageContext';
+import { PositionContext } from '../../context/PositionContext';
+import { StageContext } from '../../context/StageContext';
 import ShortcutType from '../../../common/enums/ShortcutType';
 import { ScriptShortcut } from '../../../types/Shortcut';
 

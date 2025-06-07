@@ -1,7 +1,7 @@
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
 import path from 'path';
-import { app, BrowserWindow, shell, screen, Menu, App } from 'electron';
+import { app, BrowserWindow, shell, screen, Menu } from 'electron';
 import MenuBuilder from './menu';
 import {
   getAssetPath,

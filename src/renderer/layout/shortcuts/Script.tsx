@@ -9,7 +9,6 @@ export default function Script(props: ScriptProps) {
 
   const execute = () => {
     // run script
-
   }
 
   return (

@@ -1,5 +1,4 @@
 import { Menu, BrowserWindow, MenuItemConstructorOptions } from 'electron';
-import { enableEditMode, disableEditMode } from './edit';
 
 export default class MenuBuilder {
   mainWindow: BrowserWindow;
@@ -11,8 +10,6 @@ export default class MenuBuilder {
   buildMenu(): void {
     this.mainWindow.webContents.on('context-menu', (_, props) => {
       const menuOptions: MenuItemConstructorOptions[] = [];
-      menuOptions.push(...this.showEditOption());
-      menuOptions.push({ type: 'separator' });
 
       if (
         process.env.NODE_ENV === 'development' ||
@@ -24,23 +21,6 @@ export default class MenuBuilder {
 
       Menu.buildFromTemplate(menuOptions).popup({ window: this.mainWindow });
     });
-  }
-
-  showEditOption(): MenuItemConstructorOptions[] {
-    return [
-      {
-        label: 'Edit screen',
-        click: () => {
-          enableEditMode(this.mainWindow);
-        },
-      },
-      {
-        label: 'Stop editing',
-        click: () => {
-          disableEditMode(this.mainWindow);
-        },
-      },
-    ];
   }
 
   showExitOption(): MenuItemConstructorOptions[] {

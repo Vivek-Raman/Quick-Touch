@@ -1,7 +1,7 @@
-import { createContext } from 'react';
+import { createContext, useCallback, useState, useMemo } from 'react';
 import { LinkedLabel } from '../../types/LinkedLabel';
 
-const HistoryContext = createContext<{
+export const HistoryContext = createContext<{
   history: LinkedLabel[];
   pushHistory: (toAdd: LinkedLabel) => void;
   popHistory: () => void;
@@ -11,4 +11,42 @@ const HistoryContext = createContext<{
   popHistory: () => {},
 });
 
-export default HistoryContext;
+export function HistoryContextProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const [history, setHistory] = useState<LinkedLabel[]>([]);
+
+  const pushHistory = useCallback((toAdd: LinkedLabel) => {
+    setHistory((prev) => {
+      if (prev.lastIndexOf(toAdd) !== -1) {
+        return prev;
+      }
+      return [...prev, toAdd];
+    });
+  }, []);
+
+  const popHistory = useCallback(() => {
+    setHistory((prev) => {
+      const newHistory = [...prev];
+      newHistory.pop();
+      return newHistory;
+    });
+  }, []);
+
+  const contextValue = useMemo(
+    () => ({
+      history,
+      pushHistory,
+      popHistory,
+    }),
+    [history, pushHistory, popHistory],
+  );
+
+  return (
+    <HistoryContext.Provider value={contextValue}>
+      {children}
+    </HistoryContext.Provider>
+  );
+}

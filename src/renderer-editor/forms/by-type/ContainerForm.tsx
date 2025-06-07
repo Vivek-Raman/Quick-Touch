@@ -9,10 +9,10 @@ import ShortcutType from '../../../common/enums/ShortcutType';
 import { ContainerShortcut } from '../../../types/Shortcut';
 import ConfigKey from '../../../common/enums/ConfigKey';
 import { Config, ConfigEntity } from '../../../types/Config';
-import StageContext from '../../context/StageContext';
-import PositionContext from '../../context/PositionContext';
+import { StageContext } from '../../context/StageContext';
+import { PositionContext } from '../../context/PositionContext';
 import { createStage } from '../../../common/db-util';
-import HistoryContext from '../../context/HistoryContext';
+import { HistoryContext } from '../../context/HistoryContext';
 
 export default function ContainerForm() {
   const { stage: parentStage, setStage: setParentStage } =

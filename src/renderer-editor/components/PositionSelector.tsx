@@ -5,14 +5,14 @@ import {
   SimpleGrid,
   UnstyledButton,
 } from '@mantine/core';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import PouchDb from 'pouchdb-browser';
 import { CENTER_INDEX } from '../../common/constants';
 import Loading from '../../common/Loading';
 import ShortcutPreview from './ShortcutPreview';
-import PositionContext from '../context/PositionContext';
-import StageContext from '../context/StageContext';
-import HistoryContext from '../context/HistoryContext';
+import { PositionContext } from '../context/PositionContext';
+import { StageContext } from '../context/StageContext';
+import { HistoryContext } from '../context/HistoryContext';
 import { Stage } from '../../types/Stage';
 
 // reference: https://mantine.dev/core/floating-indicator/#multiple-rows
@@ -39,6 +39,14 @@ export default function PositionSelector() {
     setPositionRefs(positionRefs);
   };
 
+  useEffect(() => {
+    (async () => {
+      const db = new PouchDb<Stage>('stage');
+      const rootStage = await db.get('0');
+      setStage(rootStage);
+    })();
+  }, [setStage]);
+
   if (!stage) {
     return <Loading />;
   }
@@ -63,6 +71,7 @@ export default function PositionSelector() {
                 key="x"
                 h="100%"
                 w="100%"
+                p="sm"
                 variant="outline"
                 style={{ textAlign: 'center', verticalAlign: 'middle' }}
                 onClick={goBack}
@@ -77,7 +86,7 @@ export default function PositionSelector() {
               key={child.position}
               ref={setPositionRef(child.position)}
               onClick={() => setPosition(child.position)}
-              p="md"
+              p="sm"
               style={{ textAlign: 'center', verticalAlign: 'middle' }}
             >
               <ShortcutPreview shortcut={child} />
