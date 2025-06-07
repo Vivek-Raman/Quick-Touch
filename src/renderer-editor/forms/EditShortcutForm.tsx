@@ -1,22 +1,20 @@
-import { SegmentedControl, Space, Text } from '@mantine/core';
+import { SegmentedControl, Space, Stack, Text } from '@mantine/core';
 import { useContext, useEffect, useState } from 'react';
-import { Shortcut } from '../../../types/Shortcut';
+import { Shortcut } from '../../types/Shortcut';
 import { SHORTCUT_TYPES } from '../../common/constants';
-import ShortcutType from '../../enums/ShortcutType';
+import ShortcutType from '../../common/enums/ShortcutType';
 import ContainerForm from './by-type/ContainerForm';
-import StageContext from '../context/StageContext';
-import PositionContext from '../context/PositionContext';
+import { StageContext } from '../context/StageContext';
+import { PositionContext } from '../context/PositionContext';
 import ScriptForm from './by-type/ScriptForm';
+import Loading from '../../common/Loading';
 
-interface EditShortcutFormProps {
-  stageID: string;
-}
-
-export default function EditShortcutForm(props: EditShortcutFormProps) {
-  const { stageID } = props;
+export default function EditShortcutForm() {
   const { stage } = useContext(StageContext);
   const { position } = useContext(PositionContext);
-  const [shortcut, setShortcut] = useState<Shortcut>(stage!.children[position]);
+  const [shortcut, setShortcut] = useState<Shortcut | null>(
+    stage?.children[position] ?? null,
+  );
   const [type, setType] = useState<string>();
 
   useEffect(() => {
@@ -25,8 +23,12 @@ export default function EditShortcutForm(props: EditShortcutFormProps) {
     setType(stage.children[position].type);
   }, [stage, position]);
 
+  if (!shortcut) {
+    return <Loading />;
+  }
+
   return (
-    <>
+    <Stack m="lg">
       <SegmentedControl
         key={`${position}-${shortcut}`}
         data={SHORTCUT_TYPES}
@@ -36,11 +38,8 @@ export default function EditShortcutForm(props: EditShortcutFormProps) {
         style={{ appRegion: 'no-drag' }}
       />
       {type !== shortcut.type && <Text size="xs">Yet to save changes</Text>}
-
-      <Space h="sm" />
-
       {type === ShortcutType.CONTAINER && <ContainerForm />}
       {type === ShortcutType.SCRIPT && <ScriptForm />}
-    </>
+    </Stack>
   );
 }

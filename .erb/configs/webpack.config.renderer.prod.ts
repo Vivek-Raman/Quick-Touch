@@ -25,7 +25,10 @@ const configuration: webpack.Configuration = {
 
   target: ['web', 'electron-renderer'],
 
-  entry: [path.join(webpackPaths.srcRendererPath, 'index.tsx')],
+  entry: [
+    path.join(webpackPaths.srcRendererToolPath, 'index.tsx'),
+    path.join(webpackPaths.srcRendererEditorPath, 'editor.tsx'),
+  ],
 
   output: {
     path: webpackPaths.distRendererPath,
@@ -122,7 +125,19 @@ const configuration: webpack.Configuration = {
 
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: path.join(webpackPaths.srcRendererPath, 'index.ejs'),
+      template: path.join(webpackPaths.srcRendererToolPath, 'index.ejs'),
+      minify: {
+        collapseWhitespace: true,
+        removeAttributeQuotes: true,
+        removeComments: true,
+      },
+      isBrowser: false,
+      isDevelopment: false,
+    }),
+
+    new HtmlWebpackPlugin({
+      filename: 'editor.html',
+      template: path.join(webpackPaths.srcRendererEditorPath, 'editor.ejs'),
       minify: {
         collapseWhitespace: true,
         removeAttributeQuotes: true,

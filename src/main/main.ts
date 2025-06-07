@@ -3,9 +3,15 @@
 import path from 'path';
 import { app, BrowserWindow, shell, screen, Menu } from 'electron';
 import MenuBuilder from './menu';
-import { installExtensions, isDebug, resolveHtmlPath } from './util';
+import {
+  getAssetPath,
+  installExtensions,
+  isDebug,
+  resolveHtmlPath,
+} from './util';
 import AppUpdater from './updater';
 import loadAddons from './ipc/addon-installed-apps';
+import AppTray from './tray';
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -23,14 +29,6 @@ const createWindow = async () => {
     await installExtensions();
   }
 
-  const RESOURCES_PATH = app.isPackaged
-    ? path.join(process.resourcesPath, 'assets')
-    : path.join(__dirname, '../../assets');
-
-  const getAssetPath = (...paths: string[]): string => {
-    return path.join(RESOURCES_PATH, ...paths);
-  };
-
   mainWindow = new BrowserWindow({
     show: false,
     width: 160,
@@ -41,7 +39,7 @@ const createWindow = async () => {
     alwaysOnTop: true,
     movable: true,
     skipTaskbar: true,
-    icon: getAssetPath('icon.png'),
+    icon: getAssetPath(app, 'icon.png'),
     webPreferences: {
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')
@@ -101,6 +99,9 @@ const createWindow = async () => {
 
   // eslint-disable-next-line
   new AppUpdater();
+
+  // eslint-disable-next-line
+  new AppTray();
 };
 
 app.on('window-all-closed', () => {

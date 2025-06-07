@@ -2,9 +2,9 @@ import { useNavigate } from 'react-router-dom';
 import { useCallback, useEffect, useState } from 'react';
 import PouchDb from 'pouchdb-browser';
 import { StageEntity } from '../types/Stage';
-import Loading from './common/Loading';
+import Loading from '../common/Loading';
 import { Config } from '../types/Config';
-import ConfigKey from './enums/ConfigKey';
+import ConfigKey from '../common/enums/ConfigKey';
 
 export default function App() {
   const navigate = useNavigate();
@@ -22,13 +22,13 @@ export default function App() {
   }, [navigate]);
 
   useEffect(() => {
-    window.electron.ipcRenderer.on('ipc--set-edit-mode', async (editMode) => {
-      if (editMode) {
-        await navigate('/editor');
-      } else {
-        await navigate('/');
-      }
-    });
+    // window.electron.ipcRenderer.on('ipc--set-edit-mode', async (editMode) => {
+    //   if (editMode) {
+    //     await navigate('/editor');
+    //   } else {
+    //     await navigate('/');
+    //   }
+    // });
 
     window.electron.ipcRenderer.on('ipc--dev--flush-db', async (flush) => {
       if (!flush) return;

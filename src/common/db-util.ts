@@ -1,6 +1,6 @@
 import type PouchDB from 'pouchdb-browser';
-import { Stage } from '../../types/Stage';
-import ShortcutType from '../enums/ShortcutType';
+import { Stage } from '../types/Stage';
+import ShortcutType from './enums/ShortcutType';
 import { SHORTCUTS_IN_STAGE } from './constants';
 
 // eslint-disable-next-line import/prefer-default-export

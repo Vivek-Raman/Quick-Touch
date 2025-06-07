@@ -1,6 +1,6 @@
 import { Breadcrumbs, UnstyledButton } from '@mantine/core';
 import { useContext } from 'react';
-import HistoryContext from '../context/HistoryContext';
+import { HistoryContext } from '../context/HistoryContext';
 
 export default function StageBreadcrumbs() {
   const { history, popHistory } = useContext(HistoryContext);
