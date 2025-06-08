@@ -1,6 +1,6 @@
 import { app, Menu, nativeImage, Tray } from 'electron';
 import { getAssetPath } from './util';
-import EditV2 from './edit-v2';
+import openEditScreen from './edit';
 
 export default class AppTray {
   tray: Tray;
@@ -21,7 +21,7 @@ export default class AppTray {
         {
           label: 'Edit screen',
           click: () => {
-            EditV2.openEditScreen();
+            openEditScreen();
           },
         },
         { type: 'separator' },

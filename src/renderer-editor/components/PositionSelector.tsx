@@ -1,5 +1,6 @@
 import {
   Button,
+  Fieldset,
   FloatingIndicator,
   Group,
   SimpleGrid,
@@ -19,7 +20,7 @@ import { Stage } from '../../types/Stage';
 export default function PositionSelector() {
   const { stage, setStage } = useContext(StageContext);
   const { position, setPosition } = useContext(PositionContext);
-  const { history, popHistory } = useContext(HistoryContext);
+  const { history, pushHistory, popHistory } = useContext(HistoryContext);
   const [rootRef, setRootRef] = useState<HTMLElement | null>(null);
   const [positionRefs, setPositionRefs] = useState<
     Record<number, HTMLButtonElement>
@@ -44,58 +45,66 @@ export default function PositionSelector() {
       const db = new PouchDb<Stage>('stage');
       const rootStage = await db.get('0');
       setStage(rootStage);
+      pushHistory({
+        label: rootStage.name,
+        id: '0',
+      });
     })();
-  }, [setStage]);
+  }, [setStage, pushHistory]);
 
   if (!stage) {
     return <Loading />;
   }
   return (
-    <Group justify="center" ref={setRootRef} style={{ position: 'relative' }}>
-      <FloatingIndicator
-        target={positionRefs[position]}
-        parent={rootRef}
-        style={{
-          borderRadius: 'var(--mantine-radius-md)',
-          boxShadow: 'var(--mantine-shadow-md)',
-          border: '1px solid teal',
-        }}
-      />
-      <SimpleGrid cols={3}>
-        {stage.children.flatMap((child, index) => {
-          const elements = [];
-          if (index === CENTER_INDEX) {
+    <Fieldset legend="Position">
+      <Group justify="center" ref={setRootRef} style={{ position: 'relative' }}>
+        <FloatingIndicator
+          target={positionRefs[position]}
+          parent={rootRef}
+          style={{
+            borderRadius: 'var(--mantine-radius-md)',
+            boxShadow: 'var(--mantine-shadow-md)',
+            border: '1px solid teal',
+          }}
+        />
+        <SimpleGrid cols={3}>
+          {stage.children.flatMap((child, index) => {
+            const elements = [];
+            if (index === CENTER_INDEX) {
+              elements.push(
+                <Button
+                  disabled={history.length <= 1}
+                  key="x"
+                  h="100%"
+                  w="100%"
+                  p="sm"
+                  variant="outline"
+                  style={{ textAlign: 'center', verticalAlign: 'middle' }}
+                  onClick={goBack}
+                >
+                  Back
+                </Button>,
+              );
+            }
+
             elements.push(
-              <Button
-                disabled={history.length <= 1}
-                key="x"
-                h="100%"
-                w="100%"
-                p="sm"
-                variant="outline"
-                style={{ textAlign: 'center', verticalAlign: 'middle' }}
-                onClick={goBack}
+              <UnstyledButton
+                key={child.position}
+                ref={setPositionRef(child.position)}
+                onClick={() => setPosition(child.position)}
+                w="5rem"
+                h="4rem"
+                p="md"
+                style={{ textAlign: 'center' }}
               >
-                Back
-              </Button>,
+                <ShortcutPreview shortcut={child} />
+              </UnstyledButton>,
             );
-          }
 
-          elements.push(
-            <UnstyledButton
-              key={child.position}
-              ref={setPositionRef(child.position)}
-              onClick={() => setPosition(child.position)}
-              p="sm"
-              style={{ textAlign: 'center', verticalAlign: 'middle' }}
-            >
-              <ShortcutPreview shortcut={child} />
-            </UnstyledButton>,
-          );
-
-          return elements;
-        })}
-      </SimpleGrid>
-    </Group>
+            return elements;
+          })}
+        </SimpleGrid>
+      </Group>
+    </Fieldset>
   );
 }

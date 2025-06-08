@@ -82,7 +82,7 @@ export default function ContainerForm() {
 
   return (
     <form onSubmit={containerForm.onSubmit(handleSubmit)}>
-      <Stack gap="md" align="center" w="100%">
+      <Stack gap="md" w="100%" h="100%">
         <TextInput
           label="Container Name"
           key={containerForm.key('stageName')}

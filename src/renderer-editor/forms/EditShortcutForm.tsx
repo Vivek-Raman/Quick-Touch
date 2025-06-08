@@ -1,13 +1,13 @@
-import { SegmentedControl, Space, Stack, Text } from '@mantine/core';
+import { SegmentedControl, Stack, Text } from '@mantine/core';
 import { useContext, useEffect, useState } from 'react';
-import { Shortcut } from '../../types/Shortcut';
 import { SHORTCUT_TYPES } from '../../common/constants';
 import ShortcutType from '../../common/enums/ShortcutType';
-import ContainerForm from './by-type/ContainerForm';
-import { StageContext } from '../context/StageContext';
-import { PositionContext } from '../context/PositionContext';
-import ScriptForm from './by-type/ScriptForm';
 import Loading from '../../common/Loading';
+import { Shortcut } from '../../types/Shortcut';
+import { PositionContext } from '../context/PositionContext';
+import { StageContext } from '../context/StageContext';
+import ContainerForm from './by-type/ContainerForm';
+import ScriptForm from './by-type/ScriptForm';
 
 export default function EditShortcutForm() {
   const { stage } = useContext(StageContext);
