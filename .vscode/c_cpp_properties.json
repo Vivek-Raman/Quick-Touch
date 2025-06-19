@@ -4,7 +4,7 @@
       "name": "Linux",
       "includePath": [
         "${workspaceFolder}/**",
-        "/home/wannab/.nvm/versions/node/v23.11.0/include/node"
+        "/home/vivek/.nvm/versions/node/v23.11.0/include/node"
       ],
       "defines": [],
       "compilerPath": "/usr/bin/gcc",
