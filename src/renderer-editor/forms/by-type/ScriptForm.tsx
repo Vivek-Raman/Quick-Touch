@@ -11,8 +11,7 @@ import ShortcutType from '../../../common/enums/ShortcutType';
 import { ScriptShortcut } from '../../../types/Shortcut';
 
 export default function ScriptForm() {
-  const { stage: parentStage, setStage: setParentStage } =
-    useContext(StageContext)!;
+  const { stage, setStage } = useContext(StageContext)!;
   const { position } = useContext(PositionContext);
   const [updateMode, setUpdateMode] = useState<boolean>(false);
   const scriptForm = useForm({
@@ -21,22 +20,30 @@ export default function ScriptForm() {
     initialValues: {
       script: '',
     },
+    validate: {
+      script: (value) => {
+        if (value.length === 0) {
+          return 'Script is required';
+        }
+      },
+    },
   });
 
   const handleSubmit = async (values: typeof scriptForm.values) => {
     const stageDb = new PouchDb<Stage>('stage');
 
     // update shortcut in stage
-    const parent: StageEntity = await stageDb.get(parentStage!._id);
-    const shortcut = parent!.children[position] as ScriptShortcut;
+    const stageToPersist: StageEntity = await stageDb.get(stage!._id);
+    const shortcut = stageToPersist!.children[position] as ScriptShortcut;
     shortcut.type = ShortcutType.SCRIPT;
     shortcut.script = values.script;
-    await stageDb.put(parent);
-    setParentStage(parent);
+    const update = await stageDb.put(stageToPersist);
+    stageToPersist._rev = update.rev;
+    setStage(stageToPersist);
   };
 
   const getScriptShortcut = () => {
-    return parentStage!.children[position] as ScriptShortcut;
+    return stage!.children[position] as ScriptShortcut;
   };
 
   useEffect(() => {
@@ -47,11 +54,11 @@ export default function ScriptForm() {
         script: shortcut.script,
       });
     }
-  }, [parentStage, position]);
+  }, [stage, position]);
 
   return (
     <form onSubmit={scriptForm.onSubmit(handleSubmit)}>
-      <Stack gap="md" align="center" w="100%">
+      <Stack gap="md" w="100%" h="100%">
         <TextInput
           label="Script to execute"
           key={scriptForm.key('script')}

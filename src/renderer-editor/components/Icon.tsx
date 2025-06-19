@@ -1,11 +1,9 @@
-// import { Icon as TheIcon } from '@iconify/react/dist/iconify.cjs';
-import { Text } from '@mantine/core';
+import { IconProps, Icon as TheIcon } from '@iconify/react/dist/iconify.cjs';
 
-interface IconProps {
-  name: string;
-}
-
-export default function Icon({ name }: IconProps) {
-  return <Text>{name}</Text>;
-  // return <TheIcon icon={name} width="100%" height="100%" />;
+export default function Icon({
+  size = '1rem',
+  ...props
+}: IconProps & { size: string | number }) {
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  return <TheIcon {...props} width={size} height={size} />;
 }

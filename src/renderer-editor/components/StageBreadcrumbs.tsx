@@ -20,7 +20,7 @@ export default function StageBreadcrumbs() {
   };
 
   return (
-    <Breadcrumbs h="100%" p="md">
+    <Breadcrumbs>
       {history.map((item, index) =>
         index === history.length - 1 ? (
           <strong>{item.label}</strong>
