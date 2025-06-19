@@ -58,7 +58,8 @@ export default function ContainerForm() {
       shortcut.stageID = values.stageID;
     }
     shortcut.stageName = values.stageName;
-    await stageDb.put(parent);
+    const update = await stageDb.put(parent);
+    parent._rev = update.rev;
     setParentStage(parent);
 
     // update stage counter config

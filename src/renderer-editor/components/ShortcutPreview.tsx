@@ -1,4 +1,3 @@
-import { type MantineStyleProp, Text } from '@mantine/core';
 import ShortcutType from '../../common/enums/ShortcutType';
 import { Shortcut } from '../../types/Shortcut';
 import Icon from './Icon';
@@ -9,20 +8,15 @@ interface ShortcutPreviewProps {
 
 export default function ShortcutPreview(props: ShortcutPreviewProps) {
   const { shortcut } = props;
-  const style: MantineStyleProp = { fontSize: 'smaller' };
 
-  const getIcon = () => {
-    if (shortcut.type === ShortcutType.EMPTY) {
-      return <Icon name="fa6-solid:plus" />;
-    }
-    if (shortcut.type === ShortcutType.CONTAINER) {
-      return <Icon name="fa6-solid:folder" />;
-    }
-    if (shortcut.type === ShortcutType.SCRIPT) {
-      return <Text style={style}>Script</Text>;
-    }
-    return <Icon name="fa6-solid:plus" />;
-  };
-
-  return getIcon();
+  if (shortcut.type === ShortcutType.EMPTY) {
+    return <Icon icon="tabler:new-section" size="2.25rem" />;
+  }
+  if (shortcut.type === ShortcutType.CONTAINER) {
+    return <Icon icon="tabler:folder" size="2.25rem" />;
+  }
+  if (shortcut.type === ShortcutType.SCRIPT) {
+    return <Icon icon="tabler:terminal" size="2.25rem" />;
+  }
+  return <Icon icon="tabler:question-mark" size="2.25rem" />;
 }
