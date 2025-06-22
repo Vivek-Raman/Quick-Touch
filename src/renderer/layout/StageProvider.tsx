@@ -1,6 +1,7 @@
 import PouchDB from 'pouchdb-browser';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { SimpleGrid } from '@mantine/core';
+import { useParams } from 'react-router-dom';
 import type { Stage, StageEntity } from '../../types/Stage';
 import {
   ContainerShortcut,
@@ -17,9 +18,9 @@ import Back from './shortcuts/Back';
 import Script from './shortcuts/Script';
 
 export default function StageProvider() {
+  const { id: stageID } = useParams();
+
   const [loading, setLoading] = useState<boolean>(false);
-  // TODO: use saved initial stage
-  const [stageId, setStageId] = useState<string>('0');
   const [shortcuts, setShortcuts] = useState<Shortcut[]>([]);
 
   const loadStage = async (id: string) => {
@@ -27,8 +28,6 @@ export default function StageProvider() {
     setShortcuts([]);
 
     const db = new PouchDB<Stage>('stage');
-    // db.info().then(console.info);
-
     const stage: StageEntity = await db.get(id);
     if (!stage) return;
     setShortcuts(stage.children);
@@ -37,9 +36,9 @@ export default function StageProvider() {
 
   useEffect(() => {
     (async () => {
-      await loadStage(stageId);
+      await loadStage(stageID);
     })();
-  }, [stageId]);
+  }, [stageID]);
 
   if (loading) return <Loading />;
   return (
@@ -47,7 +46,7 @@ export default function StageProvider() {
       {shortcuts.flatMap((shortcut, index) => {
         const elements = [];
         if (index === CENTER_INDEX) {
-          elements.push(<Back />);
+          elements.push(<Back key="x" />);
         }
         if (shortcut.type === ShortcutType.EMPTY) {
           elements.push(<div key={shortcut.position} />);
@@ -56,7 +55,6 @@ export default function StageProvider() {
             <Container
               key={shortcut.position}
               item={shortcut as ContainerShortcut}
-              doUpdate={setStageId}
             />,
           );
         } else if (shortcut.type === ShortcutType.SCRIPT) {

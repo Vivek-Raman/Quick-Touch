@@ -17,7 +17,7 @@ export default function App() {
       // No root element found; redirecting to onboarding
       await navigate('/first-launch');
     } else {
-      await navigate('/stage');
+      await navigate('/stage/0');
     }
   }, [navigate]);
 
