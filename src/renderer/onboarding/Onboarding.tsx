@@ -1,5 +1,5 @@
 import PouchDb from 'pouchdb-browser';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { Button, Title } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import { Stage } from '../../types/Stage';
@@ -32,13 +32,12 @@ export default function Onboarding() {
     })();
   }, []);
 
-  if (loading) <Loading />;
   return (
-    <>
+    <Suspense fallback={<Loading />}>
       <Title>Quick-Touch</Title>
       <Button disabled={loading} onClick={() => start()}>
         Get started {'->'}
       </Button>
-    </>
+    </Suspense>
   );
 }
