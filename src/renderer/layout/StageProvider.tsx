@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { CENTER_INDEX } from '../../common/constants';
 import ShortcutType from '../../common/enums/ShortcutType';
-import {
+import type {
   ContainerShortcut,
   HotkeyShortcut,
   ScriptShortcut,
@@ -20,7 +20,7 @@ import Script from './shortcuts/Script';
 const TRANSITIONS = [
   'pop-bottom-right', 'fade-up'    , 'pop-bottom-left',
   'fade-left'       , /* 'fade', */       'fade-right',
-  'pop-top-right'  , 'fade-down'  ,   'pop-top-left',
+  'pop-top-right'   , 'fade-down'  ,    'pop-top-left',
 ] as MantineTransition[];
 const TRANSITION_DURATION = 250;
 const TRANSITION_EASING = 'ease-in';
