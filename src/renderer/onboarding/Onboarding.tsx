@@ -1,12 +1,13 @@
 import PouchDb from 'pouchdb-browser';
 import { Suspense, useEffect, useState } from 'react';
-import { Button, Title } from '@mantine/core';
+import { Center, UnstyledButton } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import { Stage } from '../../types/Stage';
 import Loading from '../../common/Loading';
 import type { Config } from '../../types/Config';
 import ConfigKey from '../../common/enums/ConfigKey';
 import { createStage } from '../../common/db-util';
+import Icon from '../../common/Icon';
 
 export default function Onboarding() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -21,7 +22,7 @@ export default function Onboarding() {
   };
 
   const start = () => {
-    navigate('/stage');
+    navigate('/root');
   };
 
   useEffect(() => {
@@ -34,10 +35,11 @@ export default function Onboarding() {
 
   return (
     <Suspense fallback={<Loading />}>
-      <Title>Quick-Touch</Title>
-      <Button disabled={loading} onClick={() => start()}>
-        Get started {'->'}
-      </Button>
+      <Center h="100%">
+        <UnstyledButton disabled={loading} onClick={() => start()}>
+          <Icon icon="tabler:arrow-right" />
+        </UnstyledButton>
+      </Center>
     </Suspense>
   );
 }

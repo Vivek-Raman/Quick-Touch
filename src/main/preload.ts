@@ -18,6 +18,12 @@ const electronHandler = {
     listInstalledApps(): Promise<any[]> {
       return ipcRenderer.invoke('list-installed-apps');
     },
+    expand(): Promise<void> {
+      return ipcRenderer.invoke('set-tool-expanded', true);
+    },
+    collapse(): Promise<void> {
+      return ipcRenderer.invoke('set-tool-expanded', false);
+    },
   },
 };
 

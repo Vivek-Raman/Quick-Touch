@@ -1,6 +1,6 @@
 body {
   user-select: none;
-  background-color: grey;
+  background-color: var(--mantine-color-gray-1);
   position: relative;
   app-region: drag;
   height: 100vh;

@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Suspense, useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import PouchDb from 'pouchdb-browser';
 import { StageEntity } from '../types/Stage';
 import Loading from '../common/Loading';
@@ -16,21 +16,28 @@ export default function App() {
       // No root element found; redirecting to onboarding
       await navigate('/first-launch');
     } else {
-      await navigate('/stage/0');
+      await navigate('/root');
     }
   }, [navigate]);
 
   useEffect(() => {
-    window.electron.ipcRenderer.on('ipc--dev--flush-db', async (flush) => {
-      if (!flush) return;
-      const stageDB = new PouchDb<StageEntity>('stage');
-      await stageDB.destroy();
-      const configDB = new PouchDb<Config>('config');
-      await configDB.destroy();
-      await checkFirstTimeUser();
-    });
+    const unsub = window.electron.ipcRenderer.on(
+      'ipc--dev--flush-db',
+      async (flush) => {
+        if (!flush) return;
+        const stageDB = new PouchDb<StageEntity>('stage');
+        await stageDB.destroy();
+        const configDB = new PouchDb<Config>('config');
+        await configDB.destroy();
+        await checkFirstTimeUser();
+      },
+    );
 
     checkFirstTimeUser();
+
+    return () => {
+      unsub();
+    };
   }, [checkFirstTimeUser]);
 
   return <Loading />;

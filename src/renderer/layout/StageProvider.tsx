@@ -1,6 +1,6 @@
 import { MantineTransition, SimpleGrid, Transition } from '@mantine/core';
 import PouchDB from 'pouchdb-browser';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { CENTER_INDEX } from '../../common/constants';
 import ShortcutType from '../../common/enums/ShortcutType';
@@ -15,6 +15,7 @@ import Back from './shortcuts/Back';
 import Container from './shortcuts/Container';
 import Hotkey from './shortcuts/Hotkey';
 import Script from './shortcuts/Script';
+import ToolSizeContext from '../context/ToolSizeContext';
 
 // prettier-ignore
 const TRANSITIONS = [
@@ -29,6 +30,7 @@ export default function StageProvider() {
   const { id: stageID } = useParams<{ id?: string }>();
   const [shortcuts, setShortcuts] = useState<Shortcut[]>([]);
   const [mounted, setMounted] = useState(false);
+  const { expand } = useContext(ToolSizeContext);
 
   const loadStage = async (id: string) => {
     setShortcuts([]);
@@ -51,6 +53,10 @@ export default function StageProvider() {
       setMounted(true);
     }, 10);
   }, [stageID]);
+
+  useEffect(() => {
+    expand();
+  }, [expand]); // TODO: continue here
 
   return (
     <SimpleGrid cols={3} h="100%" p="xs">

@@ -4,8 +4,10 @@ import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import StageProvider from './layout/StageProvider';
 import Onboarding from './onboarding/Onboarding';
 import App from './App';
+import Root from './layout/Root';
 import './App.css';
 import '@mantine/core/styles.css';
+import ToolSizeContextProvider from './context/ToolSizeContextProvider';
 
 const theme = createTheme({
   primaryColor: 'teal',
@@ -16,11 +18,14 @@ const root = createRoot(container);
 root.render(
   <MantineProvider theme={theme} defaultColorScheme="dark">
     <MemoryRouter>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/stage/:id" element={<StageProvider />} />
-        <Route path="/first-launch" element={<Onboarding />} />
-      </Routes>
+      <ToolSizeContextProvider>
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path="/root" element={<Root />} />
+          <Route path="/stage/:id" element={<StageProvider />} />
+          <Route path="/first-launch" element={<Onboarding />} />
+        </Routes>
+      </ToolSizeContextProvider>
     </MemoryRouter>
   </MantineProvider>,
 );
