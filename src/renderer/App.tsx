@@ -33,9 +33,5 @@ export default function App() {
     checkFirstTimeUser();
   }, [checkFirstTimeUser]);
 
-  return (
-    <Suspense fallback={<Loading />}>
-      <div>You should not be here.</div>
-    </Suspense>
-  );
+  return <Loading />;
 }

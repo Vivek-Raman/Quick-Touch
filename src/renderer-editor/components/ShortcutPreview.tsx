@@ -1,6 +1,6 @@
 import ShortcutType from '../../common/enums/ShortcutType';
 import { Shortcut } from '../../types/Shortcut';
-import Icon from './Icon';
+import Icon from '../../common/Icon';
 
 interface ShortcutPreviewProps {
   shortcut: Shortcut;
