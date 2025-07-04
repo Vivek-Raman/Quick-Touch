@@ -56,7 +56,7 @@ export default function StageProvider() {
 
   useEffect(() => {
     expand();
-  }, [expand]); // TODO: continue here
+  }, [expand]);
 
   return (
     <SimpleGrid cols={3} h="100%" p="xs">

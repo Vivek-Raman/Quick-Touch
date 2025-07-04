@@ -3,7 +3,7 @@
 
 import { URL } from 'url';
 import path from 'path';
-import type { App } from 'electron';
+import { screen, type App, type BrowserWindow } from 'electron';
 
 export function resolveHtmlPath(htmlFileName: string) {
   if (process.env.NODE_ENV === 'development') {
@@ -37,3 +37,37 @@ export const getAssetPath = (app: App, ...paths: string[]): string => {
     : path.join(__dirname, '../../assets');
   return path.join(RESOURCES_PATH, ...paths);
 };
+
+export function isWindowTouchingScreenEdge(
+  win: BrowserWindow,
+  threshold = 10,
+): {
+  isTouchingLeft: boolean;
+  isTouchingTop: boolean;
+  isTouchingRight: boolean;
+  isTouchingBottom: boolean;
+} {
+  const windowBounds = win.getBounds();
+  const display = screen.getDisplayMatching(windowBounds);
+  const screenBounds = display.bounds;
+
+  const isTouchingLeft = windowBounds.x - screenBounds.x <= threshold;
+  const isTouchingTop = windowBounds.y - screenBounds.y <= threshold;
+  const isTouchingRight =
+    screenBounds.x +
+      screenBounds.width -
+      (windowBounds.x + windowBounds.width) <=
+    threshold;
+  const isTouchingBottom =
+    screenBounds.y +
+      screenBounds.height -
+      (windowBounds.y + windowBounds.height) <=
+    threshold;
+
+  return {
+    isTouchingLeft,
+    isTouchingTop,
+    isTouchingRight,
+    isTouchingBottom,
+  };
+}

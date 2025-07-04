@@ -12,6 +12,7 @@ import {
 import AppUpdater from './updater';
 import loadAddons from './ipc/addon-installed-apps';
 import AppTray from './tray';
+import ToolSizeExpander from './ipc/tool-size';
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -66,28 +67,6 @@ const createWindow = async () => {
     mainWindow = null;
   });
 
-  mainWindow.on('move', () => {
-    if (!mainWindow) return;
-
-    const bounds = mainWindow.getBounds();
-    const display = screen.getDisplayMatching(bounds);
-
-    const maxX = display.bounds.x + display.bounds.width - bounds.width;
-    const maxY = display.bounds.y + display.bounds.height - bounds.height;
-
-    const newX = Math.min(Math.max(bounds.x, display.bounds.x), maxX);
-    const newY = Math.min(Math.max(bounds.y, display.bounds.y), maxY);
-
-    if (bounds.x !== newX || bounds.y !== newY) {
-      mainWindow.setBounds({
-        x: newX,
-        y: newY,
-        width: bounds.width,
-        height: bounds.height,
-      });
-    }
-  });
-
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
 
@@ -102,6 +81,9 @@ const createWindow = async () => {
 
   // eslint-disable-next-line
   new AppTray();
+
+  // eslint-disable-next-line
+  new ToolSizeExpander(mainWindow);
 };
 
 app.on('window-all-closed', () => {
