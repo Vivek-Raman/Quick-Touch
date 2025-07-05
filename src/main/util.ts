@@ -1,9 +1,9 @@
 /* eslint-disable global-require */
 /* eslint-disable no-console */
 
-import { URL } from 'url';
-import path from 'path';
 import { screen, type App, type BrowserWindow } from 'electron';
+import path from 'path';
+import { URL } from 'url';
 
 export function resolveHtmlPath(htmlFileName: string) {
   if (process.env.NODE_ENV === 'development') {

@@ -1,18 +1,18 @@
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
+import { app, BrowserWindow, Menu, shell } from 'electron';
 import path from 'path';
-import { app, BrowserWindow, shell, screen, Menu } from 'electron';
+import loadAddons from './ipc/addon-installed-apps';
+import ToolSizeExpander from './ipc/tool-size';
 import MenuBuilder from './menu';
+import AppTray from './tray';
+import AppUpdater from './updater';
 import {
   getAssetPath,
   installExtensions,
   isDebug,
   resolveHtmlPath,
 } from './util';
-import AppUpdater from './updater';
-import loadAddons from './ipc/addon-installed-apps';
-import AppTray from './tray';
-import ToolSizeExpander from './ipc/tool-size';
 
 let mainWindow: BrowserWindow | null = null;
 

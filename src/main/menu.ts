@@ -1,4 +1,4 @@
-import { Menu, BrowserWindow, MenuItemConstructorOptions } from 'electron';
+import { BrowserWindow, Menu, MenuItemConstructorOptions } from 'electron';
 
 export default class MenuBuilder {
   mainWindow: BrowserWindow;

@@ -1,5 +1,6 @@
-import { createContext, useState, useMemo } from 'react';
 import type PouchDB from 'pouchdb-browser';
+import type React from 'react';
+import { createContext, useMemo, useState } from 'react';
 import { Stage } from '../../types/Stage';
 
 export const StageContext = createContext<{

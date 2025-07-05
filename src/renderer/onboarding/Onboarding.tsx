@@ -1,13 +1,13 @@
+import { Center, UnstyledButton } from '@mantine/core';
 import PouchDb from 'pouchdb-browser';
 import { Suspense, useEffect, useState } from 'react';
-import { Center, UnstyledButton } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { Stage } from '../../types/Stage';
+import { createStage } from '../../common/db-util';
+import ConfigKey from '../../common/enums/ConfigKey';
+import Icon from '../../common/Icon';
 import Loading from '../../common/Loading';
 import type { Config } from '../../types/Config';
-import ConfigKey from '../../common/enums/ConfigKey';
-import { createStage } from '../../common/db-util';
-import Icon from '../../common/Icon';
+import { Stage } from '../../types/Stage';
 
 export default function Onboarding() {
   const [loading, setLoading] = useState<boolean>(false);

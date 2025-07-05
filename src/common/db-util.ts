@@ -1,7 +1,8 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type PouchDB from 'pouchdb-browser';
 import { Stage } from '../types/Stage';
-import ShortcutType from './enums/ShortcutType';
 import { SHORTCUTS_IN_STAGE } from './constants';
+import ShortcutType from './enums/ShortcutType';
 
 // eslint-disable-next-line import/prefer-default-export
 export const createStage = async (
@@ -10,7 +11,6 @@ export const createStage = async (
   stageId: string,
   stageName: string,
 ) => {
-  console.log('create stage', { parentID, stageId, stageName });
   return db.put({
     _id: stageId,
     parentID,

@@ -1,7 +1,7 @@
 import type React from 'react';
 import { HistoryContextProvider } from './HistoryContext';
-import { StageContextProvider } from './StageContext';
 import { PositionContextProvider } from './PositionContext';
+import { StageContextProvider } from './StageContext';
 
 export default function EditorContextWrapper({
   children,

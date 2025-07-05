@@ -1,14 +1,14 @@
 // FIXME: This is annoying.
 /* eslint-disable react/jsx-props-no-spreading */
-import { Stack, TextInput, Button } from '@mantine/core';
-import PouchDb from 'pouchdb-browser';
+import { Button, Stack, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import PouchDb from 'pouchdb-browser';
 import { useContext, useEffect, useState } from 'react';
+import ShortcutType from '../../../common/enums/ShortcutType';
+import { ScriptShortcut } from '../../../types/Shortcut';
 import { Stage, StageEntity } from '../../../types/Stage';
 import { PositionContext } from '../../context/PositionContext';
 import { StageContext } from '../../context/StageContext';
-import ShortcutType from '../../../common/enums/ShortcutType';
-import { ScriptShortcut } from '../../../types/Shortcut';
 
 export default function ScriptForm() {
   const { stage, setStage } = useContext(StageContext)!;

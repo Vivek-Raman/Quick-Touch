@@ -1,6 +1,6 @@
 import { createTheme, MantineProvider } from '@mantine/core';
-import { createRoot } from 'react-dom/client';
 import '@mantine/core/styles.css';
+import { createRoot } from 'react-dom/client';
 import EditorApp from './EditorApp';
 
 const theme = createTheme({

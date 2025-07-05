@@ -1,6 +1,6 @@
 import { app, Menu, nativeImage, Tray } from 'electron';
-import { getAssetPath } from './util';
 import openEditScreen from './edit';
+import { getAssetPath } from './util';
 
 export default class AppTray {
   tray: Tray;

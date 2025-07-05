@@ -1,10 +1,10 @@
-import { Stack, Button, Text } from '@mantine/core';
+import { Button, Stack, Text } from '@mantine/core';
 import PouchDb from 'pouchdb-browser';
 import { useContext } from 'react';
+import ShortcutType from '../../../common/enums/ShortcutType';
 import { Stage, StageEntity } from '../../../types/Stage';
 import { PositionContext } from '../../context/PositionContext';
 import { StageContext } from '../../context/StageContext';
-import ShortcutType from '../../../common/enums/ShortcutType';
 import TypeChangeContext from '../../context/TypeChangeContext';
 
 export default function EmptyForm() {

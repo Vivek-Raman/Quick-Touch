@@ -1,13 +1,13 @@
-import { Grid, SimpleGrid, Transition } from '@mantine/core';
+import { SimpleGrid } from '@mantine/core';
 import PouchDB from 'pouchdb-browser';
 import { Suspense, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Loading from '../../common/Loading';
 import type { Shortcut } from '../../types/Shortcut';
 import type { Stage, StageEntity } from '../../types/Stage';
-import Back from './shortcuts/Back';
 import ToolSizeContext from '../context/ToolSizeContext';
 import ShortcutItem from './Shortcut';
-import Loading from '../../common/Loading';
+import Back from './shortcuts/Back';
 
 export default function StageProvider() {
   const { id: stageID } = useParams<{ id?: string }>();

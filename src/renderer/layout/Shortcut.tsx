@@ -1,15 +1,15 @@
-// eslint-disable-next-line react/require-default-props
+/* eslint-disable react/require-default-props */
 import { MantineTransition, Transition } from '@mantine/core';
+import ShortcutType from '../../common/enums/ShortcutType';
 import {
-  Shortcut,
   ContainerShortcut,
-  ScriptShortcut,
   HotkeyShortcut,
+  ScriptShortcut,
+  Shortcut,
 } from '../../types/Shortcut';
 import Container from './shortcuts/Container';
-import Script from './shortcuts/Script';
 import Hotkey from './shortcuts/Hotkey';
-import ShortcutType from '../../common/enums/ShortcutType';
+import Script from './shortcuts/Script';
 
 // prettier-ignore
 const TRANSITIONS = [

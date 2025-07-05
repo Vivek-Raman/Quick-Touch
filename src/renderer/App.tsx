@@ -1,10 +1,10 @@
-import { useNavigate } from 'react-router-dom';
-import { useCallback, useEffect } from 'react';
 import PouchDb from 'pouchdb-browser';
-import { StageEntity } from '../types/Stage';
+import { useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import ConfigKey from '../common/enums/ConfigKey';
 import Loading from '../common/Loading';
 import { Config } from '../types/Config';
-import ConfigKey from '../common/enums/ConfigKey';
+import { StageEntity } from '../types/Stage';
 
 export default function App() {
   const navigate = useNavigate();

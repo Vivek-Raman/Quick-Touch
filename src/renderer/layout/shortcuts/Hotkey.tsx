@@ -1,6 +1,6 @@
 import { Stack, UnstyledButton } from '@mantine/core';
-import { HotkeyShortcut } from '../../../types/Shortcut';
 import Icon from '../../../common/Icon';
+import { HotkeyShortcut } from '../../../types/Shortcut';
 
 interface HotkeyProps {
   item: HotkeyShortcut;

@@ -1,8 +1,8 @@
-import { useNavigate } from 'react-router-dom';
+import { Stack, UnstyledButton } from '@mantine/core';
 import type React from 'react';
-import { ContainerShortcut } from '../../../types/Shortcut';
+import { useNavigate } from 'react-router-dom';
 import Icon from '../../../common/Icon';
-import { Button, Stack, UnstyledButton } from '@mantine/core';
+import { ContainerShortcut } from '../../../types/Shortcut';
 
 interface ContainerProps {
   item: ContainerShortcut;

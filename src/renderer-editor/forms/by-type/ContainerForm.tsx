@@ -4,15 +4,15 @@ import { Button, Stack, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import PouchDb from 'pouchdb-browser';
 import { useContext, useEffect, useState } from 'react';
-import { Stage, StageEntity } from '../../../types/Stage';
-import ShortcutType from '../../../common/enums/ShortcutType';
-import { ContainerShortcut } from '../../../types/Shortcut';
-import ConfigKey from '../../../common/enums/ConfigKey';
-import { Config, ConfigEntity } from '../../../types/Config';
-import { StageContext } from '../../context/StageContext';
-import { PositionContext } from '../../context/PositionContext';
 import { createStage } from '../../../common/db-util';
+import ConfigKey from '../../../common/enums/ConfigKey';
+import ShortcutType from '../../../common/enums/ShortcutType';
+import { Config, ConfigEntity } from '../../../types/Config';
+import { ContainerShortcut } from '../../../types/Shortcut';
+import { Stage, StageEntity } from '../../../types/Stage';
 import { HistoryContext } from '../../context/HistoryContext';
+import { PositionContext } from '../../context/PositionContext';
+import { StageContext } from '../../context/StageContext';
 
 export default function ContainerForm() {
   const { stage: parentStage, setStage: setParentStage } =

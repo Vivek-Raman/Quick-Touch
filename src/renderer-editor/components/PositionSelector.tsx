@@ -6,15 +6,15 @@ import {
   SimpleGrid,
   UnstyledButton,
 } from '@mantine/core';
-import { useContext, useEffect, useState } from 'react';
 import PouchDb from 'pouchdb-browser';
+import { useContext, useEffect, useState } from 'react';
 import { CENTER_INDEX } from '../../common/constants';
 import Loading from '../../common/Loading';
-import ShortcutPreview from './ShortcutPreview';
+import { Stage } from '../../types/Stage';
+import { HistoryContext } from '../context/HistoryContext';
 import { PositionContext } from '../context/PositionContext';
 import { StageContext } from '../context/StageContext';
-import { HistoryContext } from '../context/HistoryContext';
-import { Stage } from '../../types/Stage';
+import ShortcutPreview from './ShortcutPreview';
 
 // reference: https://mantine.dev/core/floating-indicator/#multiple-rows
 export default function PositionSelector() {

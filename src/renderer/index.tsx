@@ -1,13 +1,13 @@
 import { createTheme, MantineProvider } from '@mantine/core';
+import '@mantine/core/styles.css';
 import { createRoot } from 'react-dom/client';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import App from './App';
+import './App.css';
+import ToolSizeContextProvider from './context/ToolSizeContextProvider';
+import Root from './layout/Root';
 import StageProvider from './layout/StageProvider';
 import Onboarding from './onboarding/Onboarding';
-import App from './App';
-import Root from './layout/Root';
-import './App.css';
-import '@mantine/core/styles.css';
-import ToolSizeContextProvider from './context/ToolSizeContextProvider';
 
 const theme = createTheme({
   primaryColor: 'teal',

@@ -1,5 +1,5 @@
-import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import { autoUpdater } from 'electron-updater';
 
 export default class AppUpdater {
   constructor() {

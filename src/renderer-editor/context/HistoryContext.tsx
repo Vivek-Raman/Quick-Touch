@@ -1,4 +1,5 @@
-import { createContext, useCallback, useState, useMemo } from 'react';
+import type React from 'react';
+import { createContext, useCallback, useMemo, useState } from 'react';
 import { LinkedLabel } from '../../types/LinkedLabel';
 
 export const HistoryContext = createContext<{

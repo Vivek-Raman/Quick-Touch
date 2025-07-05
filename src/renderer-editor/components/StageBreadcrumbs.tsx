@@ -1,9 +1,9 @@
 import { Breadcrumbs, UnstyledButton } from '@mantine/core';
-import { useContext } from 'react';
 import PouchDb from 'pouchdb-browser';
+import { useContext } from 'react';
+import { Stage } from '../../types/Stage';
 import { HistoryContext } from '../context/HistoryContext';
 import { StageContext } from '../context/StageContext';
-import { Stage } from '../../types/Stage';
 
 export default function StageBreadcrumbs() {
   const { setStage } = useContext(StageContext);

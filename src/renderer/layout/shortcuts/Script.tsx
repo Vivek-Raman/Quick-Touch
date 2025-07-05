@@ -1,6 +1,6 @@
 import { Stack, UnstyledButton } from '@mantine/core';
-import { ScriptShortcut } from '../../../types/Shortcut';
 import Icon from '../../../common/Icon';
+import { ScriptShortcut } from '../../../types/Shortcut';
 
 interface ScriptProps {
   item: ScriptShortcut;

@@ -1,8 +1,8 @@
 import { AppShell, Burger, Group, Stack } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import EditorContextWrapper from './context/EditorContextWrapper';
-import StageBreadcrumbs from './components/StageBreadcrumbs';
 import PositionSelector from './components/PositionSelector';
+import StageBreadcrumbs from './components/StageBreadcrumbs';
+import EditorContextWrapper from './context/EditorContextWrapper';
 import EditShortcutForm from './forms/EditShortcutForm';
 
 export default function EditorApp() {

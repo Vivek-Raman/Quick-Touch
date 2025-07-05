@@ -6,10 +6,10 @@ import Loading from '../../common/Loading';
 import { Shortcut } from '../../types/Shortcut';
 import { PositionContext } from '../context/PositionContext';
 import { StageContext } from '../context/StageContext';
+import TypeChangeContext from '../context/TypeChangeContext';
 import ContainerForm from './by-type/ContainerForm';
 import EmptyForm from './by-type/EmptyForm';
 import ScriptForm from './by-type/ScriptForm';
-import TypeChangeContext from '../context/TypeChangeContext';
 
 export default function EditShortcutForm() {
   const { stage } = useContext(StageContext);
