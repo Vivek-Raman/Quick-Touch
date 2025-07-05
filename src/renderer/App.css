@@ -1,10 +1,14 @@
 body {
   user-select: none;
-  background-color: var(--mantine-color-gray-1);
   position: relative;
   app-region: drag;
-  height: 100vh;
+  height: 100dvh;
   overflow-y: hidden;
+  transition: background-color 0.3s ease-in-out;
+}
+
+body.transparent-background {
+  background-color: transparent !important;
 }
 
 button {

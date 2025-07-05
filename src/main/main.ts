@@ -32,11 +32,12 @@ const createWindow = async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 80,
-    height: 80,
+    width: 60,
+    height: 60,
     resizable: false,
     frame: false,
     transparent: true,
+    useContentSize: true,
     alwaysOnTop: true,
     movable: true,
     skipTaskbar: true,

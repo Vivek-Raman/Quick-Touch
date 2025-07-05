@@ -1,21 +1,22 @@
 import { BrowserWindow, ipcMain, screen } from 'electron';
 import { isWindowTouchingScreenEdge } from '../util';
 
-const EXPANDED_SIZE = 160;
-const COLLAPSED_SIZE = 80;
+const EXPANDED_SIZE = 180;
+const COLLAPSED_SIZE = 60;
 
 export default class ToolSizeExpander {
   mainWindow: BrowserWindow;
 
+  private moveHandler: () => void;
+
+  private isResizing = false;
+
   constructor(mainWindow: BrowserWindow) {
     this.mainWindow = mainWindow;
 
-    this.setupMoveHandler();
-    this.setupListeners();
-  }
+    this.moveHandler = () => {
+      if (this.isResizing) return;
 
-  setupMoveHandler() {
-    this.mainWindow.on('move', () => {
       if (!this.mainWindow) return;
 
       const bounds = this.mainWindow.getBounds();
@@ -35,49 +36,79 @@ export default class ToolSizeExpander {
           height: bounds.height,
         });
       }
-    });
+    };
+
+    this.setupMoveHandler();
+    this.setupListeners();
+  }
+
+  setupMoveHandler() {
+    this.mainWindow.on('move', this.moveHandler);
   }
 
   setupListeners() {
     ipcMain.handle('set-tool-expanded', (_, expanded: boolean) => {
+      if (!this.mainWindow) return;
+
       const currentPosition = this.mainWindow.getPosition();
+
+      // Set flag and remove listener for double protection
+      this.isResizing = true;
 
       this.mainWindow.setResizable(true);
       if (expanded) {
+        // Get screen bounds to constrain expansion
+        const bounds = this.mainWindow.getBounds();
+        const display = screen.getDisplayMatching(bounds);
+        const screenBounds = display.workArea;
+
+        // Calculate ideal centered expansion position
+        const idealX =
+          currentPosition[0] - (EXPANDED_SIZE - COLLAPSED_SIZE) / 2;
+        const idealY =
+          currentPosition[1] - (EXPANDED_SIZE - COLLAPSED_SIZE) / 2;
+
+        // Constrain to screen bounds
+        const maxX = screenBounds.x + screenBounds.width - EXPANDED_SIZE;
+        const maxY = screenBounds.y + screenBounds.height - EXPANDED_SIZE;
+
+        const constrainedX = Math.min(Math.max(idealX, screenBounds.x), maxX);
+        const constrainedY = Math.min(Math.max(idealY, screenBounds.y), maxY);
+
         this.mainWindow.setSize(EXPANDED_SIZE, EXPANDED_SIZE, true);
-        this.mainWindow.setPosition(
-          currentPosition[0] - (EXPANDED_SIZE - COLLAPSED_SIZE) / 2,
-          currentPosition[1] - (EXPANDED_SIZE - COLLAPSED_SIZE) / 2,
-          true,
-        );
+        this.mainWindow.setPosition(constrainedX, constrainedY, true);
       } else {
-        // Determine which screen edges were touched while expanded so we can snap when collapsed
+        // !expanded
         const touchedEdges = isWindowTouchingScreenEdge(this.mainWindow);
         const boundsBefore = this.mainWindow.getBounds();
         const display = screen.getDisplayMatching(boundsBefore);
 
-        // Resize first so we know the final window width/height
         this.mainWindow.setSize(COLLAPSED_SIZE, COLLAPSED_SIZE, true);
 
-        let snapX = currentPosition[0] - (COLLAPSED_SIZE - EXPANDED_SIZE) / 2;
-        let snapY = currentPosition[1] - (COLLAPSED_SIZE - EXPANDED_SIZE) / 2;
+        let snapX = boundsBefore.x + (EXPANDED_SIZE - COLLAPSED_SIZE) / 2;
+        let snapY = boundsBefore.y + (EXPANDED_SIZE - COLLAPSED_SIZE) / 2;
 
         if (touchedEdges.isTouchingLeft) {
-          snapX = display.bounds.x;
+          snapX = display.workArea.x;
         }
         if (touchedEdges.isTouchingRight) {
-          snapX = display.bounds.x + display.bounds.width - COLLAPSED_SIZE;
+          snapX = display.workArea.x + display.workArea.width - COLLAPSED_SIZE;
         }
         if (touchedEdges.isTouchingTop) {
-          snapY = display.bounds.y;
+          snapY = display.workArea.y;
         }
         if (touchedEdges.isTouchingBottom) {
-          snapY = display.bounds.y + display.bounds.height - COLLAPSED_SIZE;
+          snapY = display.workArea.y + display.workArea.height - COLLAPSED_SIZE;
         }
 
         this.mainWindow.setPosition(snapX, snapY, true);
       }
       this.mainWindow.setResizable(false);
+
+      // Re-enable move handler with delay to ensure all operations complete
+      setTimeout(() => {
+        this.isResizing = false;
+      }, 100);
     });
   }
 }

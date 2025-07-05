@@ -1,4 +1,4 @@
-import { Center, Collapse, Transition, UnstyledButton } from '@mantine/core';
+import { Center, Transition, UnstyledButton } from '@mantine/core';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Icon from '../../common/Icon';
@@ -16,6 +16,16 @@ export default function Root() {
       setMounted(true);
     }, 10);
   }, [collapse]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      document.body.classList.add('transparent-background');
+    }, 250);
+    return () => {
+      clearTimeout(timeout);
+      document.body.classList.remove('transparent-background');
+    };
+  }, []);
 
   return (
     <Center h="100%">

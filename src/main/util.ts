@@ -49,7 +49,7 @@ export function isWindowTouchingScreenEdge(
 } {
   const windowBounds = win.getBounds();
   const display = screen.getDisplayMatching(windowBounds);
-  const screenBounds = display.bounds;
+  const screenBounds = display.workArea;
 
   const isTouchingLeft = windowBounds.x - screenBounds.x <= threshold;
   const isTouchingTop = windowBounds.y - screenBounds.y <= threshold;
