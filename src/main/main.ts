@@ -1,8 +1,11 @@
+/* eslint-disable no-new */
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
 import { app, BrowserWindow, Menu, shell } from 'electron';
 import path from 'path';
-import loadAddons from './ipc/addon-installed-apps';
+import ExecuteScript from './ipc/execute-script';
+import NativeListApps from './ipc/native-list-apps';
+import RelinquishFocus from './ipc/relinquish-focus';
 import ToolSizeExpander from './ipc/tool-size';
 import MenuBuilder from './menu';
 import AppTray from './tray';
@@ -81,9 +84,6 @@ const createWindow = async () => {
   new AppUpdater();
 
   // eslint-disable-next-line
-  new AppTray();
-
-  // eslint-disable-next-line
   new ToolSizeExpander(mainWindow);
 };
 
@@ -96,12 +96,15 @@ app.on('window-all-closed', () => {
 });
 
 Menu.setApplicationMenu(null);
-loadAddons();
 
 app
   .whenReady()
   .then(() => {
     createWindow();
+    new AppTray();
+    new NativeListApps();
+    new ExecuteScript();
+    new RelinquishFocus();
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.

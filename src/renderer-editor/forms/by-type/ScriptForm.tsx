@@ -1,6 +1,6 @@
 // FIXME: This is annoying.
 /* eslint-disable react/jsx-props-no-spreading */
-import { Button, Stack, TextInput } from '@mantine/core';
+import { Button, Stack, Textarea } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import PouchDb from 'pouchdb-browser';
 import { useContext, useEffect, useState } from 'react';
@@ -59,10 +59,19 @@ export default function ScriptForm() {
   return (
     <form onSubmit={scriptForm.onSubmit(handleSubmit)}>
       <Stack gap="md" w="100%" h="100%">
-        <TextInput
+        <Textarea
+          autosize
+          minRows={4}
+          maxRows={12}
           label="Script to execute"
           key={scriptForm.key('script')}
           {...scriptForm.getInputProps('script')}
+          styles={{
+            input: {
+              fontFamily: 'monospace',
+              fontSize: '14px',
+            },
+          }}
         />
         <Button type="submit">Save script</Button>
       </Stack>

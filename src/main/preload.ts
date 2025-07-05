@@ -24,6 +24,9 @@ const electronHandler = {
     collapse(): Promise<void> {
       return ipcRenderer.invoke('set-tool-expanded', false);
     },
+    executeScript(script: string): Promise<void> {
+      return ipcRenderer.invoke('execute-script', script);
+    },
   },
 };
 

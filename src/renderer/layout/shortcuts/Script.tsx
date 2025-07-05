@@ -12,7 +12,7 @@ export default function Script(props: ScriptProps) {
 
   const execute = () => {
     // TODO: run script
-    // window.electron.ipcRenderer.send('ipc--run-script', item.script);
+    window.electron.ipcRenderer.executeScript(item.script);
   };
 
   return (
